@@ -91,172 +91,32 @@
                 <table>
                     <tr>
                         <th>Username</th>
-                        <th>Password</th>
                         <th>Full name</th>
                         <th>Email</th>
                         <th>Gender</th>
                         <th>Birthday</th>
                         <th>Phone number</th>
-                        <th>Address</th>
-                        <th>Edit</th>
+                        <th>Address</th> 
                     </tr>
     
-                    <div class="scroll">
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-                            <td><a href="admin/adminBillInfo.htm" class="icon"><i class="fa-solid fa-pen"></i></a></td>
-                        </tr>
-    
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-    
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-    
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-    
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-    
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
-
-                        <tr>
-                            <td>Username</td>
-                            <td>Password</td>
-                            <td>Full name</td>
-                            <td>Email</td>
-                            <td>Gender</td>
-                            <td>Birthday</td>
-                            <td>Phone number</td>
-                            <td>Address</td>
-        
-                        </tr>
+                    <div class="scroll"> 
+    					<c:forEach var="a" items="${listAccounts }" begin="0" end="${size }">
+    						<c:if test="${a.role.getIdRole() == 2 }">
+    							<tr>
+		                            <td>${a.user_name}</td>
+		                            <td>${a.fullname}</td>
+		                            <td>${a.email}</td>
+		                            <td>${a.gender==false?'Nam':'Nữ'}</td>
+		                            <td>${a.birthday}</td>
+		                            <td>${a.phone}</td>
+		                            <td>${a.address}</td> 
+		                            
+		                        </tr>
+    						</c:if>
+    						
+    					</c:forEach>
+    				
+    					
                     </div>
                   
                    

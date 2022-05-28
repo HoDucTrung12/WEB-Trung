@@ -27,7 +27,7 @@ pageEncoding="UTF-8"%>
      
      <%@include file="/WEB-INF/views/header.jsp"%>
      
-    Main
+
     <main class="main">
         <div class="container">
             <div class="product">

@@ -101,19 +101,20 @@
 					</tr>
 
 					<div class="scroll">
-						<tr>
-							<td>124</td>
-							<td>A foking good T-shirt</td>
-							<td>$30.00</td>
-							<td>Black</td>
-							<td>Small</td>
-							<td>1</td>
-							<td><a href="admin/adminEditProd.htm" class="icon"><i
+						<c:forEach var="p" items="${listProducts }" begin="0" end="${size }">
+    	 
+    							<tr>
+		                            <td>${p.idProduct }</td>
+		                            <td>${p.name }</td>
+		                            <td>$${p.price }</td>
+		                            <td> </td>
+		                            <td> </td>
+		                            <td>${p.quantity }</td>
+		                            <td><a href="admin/adminEditProd/${p.idProduct  }.htm" style="color:#333;" class="icon"><i
 									class="fa-solid fa-pen"></i></a></td>
-							<td><a href="" class="icon"><i class="fa-solid fa-trash"></i></a></td>
-						</tr>
-
-
+							<td><a href="" class="icon"><i class="fa-solid fa-trash" style="color:#333;"></i></a></td>
+		                        </tr> 
+    					</c:forEach>
 					</div>
 
 				</table>

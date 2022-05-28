@@ -50,26 +50,55 @@ import fashion_shop.DAO.adminDAO;
 public class AdminController {
 	@Autowired
 	SessionFactory factory;
-
-	@RequestMapping("adminHome")
+	
+	// Admin Home
+	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
 	public String viewAdmin() {
 		return "admin/adminHome";
 	}
 	
-	// view product
+	
+	
+	// Show List Products
 	@RequestMapping(value = { "adminProducts" }, method = RequestMethod.GET)
-	public String adminProducts(ModelMap model) {
-		model.addAttribute("pros");
+	public String adminListProducts(ModelMap model) {
+		List<Product> listProd = getListProduct();
+		
+		model.addAttribute("listProducts", listProd);
+		model.addAttribute("size", listProd.size());
+		
 		return "admin/adminProduct";
 	}
 	
+
+	// Show  Product's Details
+	@RequestMapping(value = { "adminEditProd/{prodID}" }, method = RequestMethod.GET)
+	public String adminProduct(ModelMap model, @PathVariable("prodID") String prodID) {
+		Product prod = getProduct(prodID);
+		System.out.println("This is forking ID" + prodID);
+		model.addAttribute("p", prod); 
+		
+		return "admin/adminEditProd";
+	}
+	
+	
+	
+	// Show Accounts' information
 	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
 	public String Customers(ModelMap model) {
-//		List<Account> listcus = getLcus();
-//		model.addAttribute("listCus", listcus);
+		List<Account> listAcc = getListAccount();
+		
+		model.addAttribute("listAccounts", listAcc);
+		model.addAttribute("size", listAcc.size());
 		return "admin/adminAccount";
 	}
 	
+	
+	
+	
+	
+	
+	// Show Orders' Details
 	@RequestMapping(value = { "adminBill" }, method = RequestMethod.GET)
 	public String adminBill(ModelMap model) {
 //		List<Order> listOrders = getLOrder();
@@ -87,6 +116,50 @@ public class AdminController {
 		return "admin/adminAddProd";
 	}
 
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@ModelAttribute("listAccounts")
+	public List<Account> getListAccount() {
+		Session session = factory.getCurrentSession();
+		String hql = "From Account";
+		Query query = session.createQuery(hql);
+		List<Account> listUser = query.list();
+		return listUser;
+	}
+	
+	@ModelAttribute("listProducts")
+	public List<Product> getListProduct() {
+		Session session = factory.getCurrentSession();
+		String hql = "From Product";
+		Query query = session.createQuery(hql);
+		List<Product> listProd = query.list();
+		return listProd;
+	}
+	
+
+	public Product getProduct(String prodID) {
+		Session session = factory.getCurrentSession();
+//		String hql = "From Product where ";
+//		Query query = session.createQuery(hql);
+//		Product prod = (Product) query.uniqueResult();
+		Product prod = (Product) session.get(Product.class, prodID);
+		return prod;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	
 ////	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
 ////	public String adminHome(HttpServletRequest request, ModelMap model) {
 //////		List<Order> listOrder = getLOrder();
