@@ -18,7 +18,7 @@
 
 <link href="<c:url value='/resources/home/dist/css/reset.css' />"
 	rel="stylesheet">
-<link href="<c:url value='/resources/home/dist/css/adminAccount.css' />"
+<link href="<c:url value='/resources/home/dist/css/colorSize.css' />"
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
@@ -77,32 +77,25 @@
 				</div>
 			</div>
 
-			<div class="header-right">
-				<a href="admin/adminAddProd.htm" class="btn-add-prod"><i
-					class="fa-solid fa-plus"></i>Add product</a>
-			</div>
+			
 		</div>
 
 
 
 		<!-- Main talbe data  -->
 		<div class="main-content">
-			<div class="table-container">
-				<table>
+			<table>
 					<tr>
 						<th>ID</th>
 						<th>Image</th>
 						<th>Category</th>
 						<th>Name</th>
 						<th>Price</th>
-						<th>View</th>
 					</tr>
 
 					<div class="scroll">
 						
 						
-    					
-    					<c:forEach var="p" items="${listProducts }" begin="0" end="${size }">
     	 
     							<tr>
 		                            <td>${p.idProduct }</td>
@@ -110,17 +103,49 @@
 		                            <td>${p.getProductCategory().nameCategory }</td>
 		                            <td>${p.name }</td>
 		                            <td>$${p.price }</td>
-		                            <td><a href="admin/adminProd/${p.idProduct }.htm" style="color:#333;" class="icon"><i
-									class="fa-solid fa-circle-info"></i></a></td>
-							
 		                        </tr> 
+    					
+					</div>
+
+				</table>
+		
+		
+			<div class="table-container">
+				
+				
+				
+				<table>
+					<tr>
+						<th>Color</th>
+						<th>Size</th>
+						<th>Quantity</th>
+						<th>Edit</th>
+                        <th>Delete</th>
+					</tr>
+
+					<div class="scroll">
+						<c:forEach var="c" items="${listC}" begin="0" end="${size }">
+    	 					<tr>
+								<td>${c.pk.color }</td>
+								<td>${c.pk.size }</td>
+								<td>${c.pk.quantity }</td>
+								<td>
+                                <a href="" class="btn-func" style="background-color: #1abc9c;"><i class="fa-solid fa-pen"></i></a>
+
+                            </td>
+                            <td>
+                                <a href="" class="btn-func" style="background-color: #c0392b;"><i class="fa-solid fa-trash-can"></i></a>
+                            </td>
+							</tr> 
     					</c:forEach>
+    					
 					</div>
 
 				</table>
 			</div>
-
-
+			
+			<a href="admin/deleteProduct/${p.idProduct }.htm" class="btn" style="left: 320px; right: unset; background-color: #c0392b;">DELETE THIS PRODUCT</a>
+            <a href="admin/addCS/${p.idProduct }.htm" class="btn">Add</a>
 		</div>
 	</main>
 

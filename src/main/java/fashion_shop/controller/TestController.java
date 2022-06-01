@@ -26,7 +26,6 @@ public class TestController {
 
 	@RequestMapping(value="test/form", method=RequestMethod.GET)
 	public String form( ModelMap model) {
-		model.addAttribute("list", prodDAO.getLProd());
 		return "test";
 	}
 	

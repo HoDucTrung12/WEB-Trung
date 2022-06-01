@@ -88,11 +88,11 @@
             </div>
         </div>
 
-       
+		${message }       
 
         <!-- Main talbe data  -->
         <div class="main-content">
-            <form action="admin/adminProducts.htm" method="post">
+            <form method="post"  >
             	<div class="row">
 	                <div class="col-4 image">
 	                    <img src="${p.image }" alt="">
@@ -107,43 +107,32 @@
 	    
 	                        <div class="col-6 field name">
 	                            <label for="">Category:</label>
-	                            <input type="text" value="Shirt" readonly >
+	                            <div class="product-form">
+	                                <select name="cat" id="">
+	                                    
+	                                    <c:forEach var="c" items="${listCats }" begin="0" end="6">
+	                                    	<option value="${c.idCategory }" ${c.idCategory==p.getProductCategory().getIdCategory()?'selected':'' }>${c.nameCategory }</option>
+	                                    </c:forEach>
+	                                    
+	                                </select>
+	                            </div>
 	                        </div>
 	
 	
 	                        <div class="col-6 field name">
 	                            <label for="">Name:</label>
-	                            <input type="text" value="${p.name }" name="name">
+	                            <input type="text" value="${p.name }" name="name" >
 	                        </div>
 	    
 	                        <div class="col-6 field price">
 	                            <label for="">Price:</label>
-	                            <input type="number" id="" value="${p.price }" name="price">
+	                            <input type="number" id="" value="${p.price }" name="price" > 
 	                        </div>
-	    
-	                        <div class="col-6 field color">
-	                            <label for="">Color:</label>
-	                            <input type="text" name="color" id="" value="White"  >
-	                        </div>
-	    
-	                        <div class="col-6 field size">
-	                            <label for="">Size:</label>
-	                            <input type="text" value="Small" name="size" id="" >
-	                        </div>
-	    
-	                        <div class="col-6 field quantity">
-	                            <label for="">Quantity:</label>
-	                            <div class="form-control">
-	                                <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
-	                                <input type="number" name="quantity" value="${p.quantity }" min="1" max="100" >
-	                                <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
-	                            </div>
-	    
-	                        </div>
+	     
 	
 	                        <div class="col-6 field">
-	                            <label for="">Image file:</label>
-	                            <input type="file">
+	                            <label for="">Image source:</label>
+	                            <input name="image" type="text" value="${p.image }" >
 	                        </div>
 	
 	                    </div>

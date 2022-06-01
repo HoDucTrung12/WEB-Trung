@@ -42,6 +42,9 @@ import fashion_shop.entity.OrderDetail;
 import fashion_shop.entity.Product;
 import fashion_shop.entity.ProductCategory;
 import fashion_shop.entity.Role;
+import fashion_shop.entity.SizeAndColor;
+import fashion_shop.entity.SizeAndColor.PK;
+import fashion_shop.DAO.accountDAO;
 import fashion_shop.DAO.adminDAO;
 import fashion_shop.DAO.productDAO;
 
@@ -54,150 +57,253 @@ public class AdminController {
 	SessionFactory factory;
 	
 	@Autowired
-	productDAO prodDAO;
+	accountDAO accountDAL;
 	
-	// Admin Home
+	@Autowired
+	productDAO productDAL;
+	
+	
+	
+	// HOME
 	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
-	public String viewAdmin() {
+	public String adminHome() {
 		return "admin/adminHome";
 	}
 	
 	
 	
+	///////////////////////////////////  Accounts /////////////////////////////////// 
+	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
+	public String showAccount(ModelMap model) {
+		List<Account> listAcc = accountDAL.getLUser();
+			
+		model.addAttribute("listAccounts", listAcc);
+		model.addAttribute("size", listAcc.size());
+		return "admin/adminAccount";
+	}	
+	
+	
+	
+	///////////////////////////////////  Bill - Order  /////////////////////////////////// 
+	
+	
+	
+	///////////////////////////////////  PRODUCT  /////////////////////////////////// 
+	
 	// Show List Products
 	@RequestMapping(value = { "adminProducts" }, method = RequestMethod.GET)
 	public String adminListProducts(ModelMap model) {
 		
-		model.addAttribute("listProducts", prodDAO.getLMixProd());
-		model.addAttribute("size", prodDAO.getLMixProd().size());
+		model.addAttribute("listProducts", productDAL.getLProd());
+		model.addAttribute("size", productDAL.getLProd().size());
 		
 		return "admin/adminProduct";
 	}
 	
 
 	// Show  Product's Details
-	@RequestMapping(value = { "adminEditProd/{prodID}" }, method = RequestMethod.GET)
+//	@RequestMapping(value = { "adminProd/{prodID}" }, method = RequestMethod.GET)
+//	public String showProductDetail(ModelMap model, @PathVariable("prodID") String prodID) {
+//		Product prod = productDAL.getProduct(prodID);
+//		model.addAttribute("p", prod); 
+//		
+//		return "admin/adminViewProd";
+//	}
+	
+	// ADD product
+	@RequestMapping(value="adminAddProd", method=RequestMethod.GET)
+	public String viewAdminAddProd( ModelMap model) {
+		model.addAttribute("listCats", productDAL.getLCat());
+		return "admin/adminAddProd";
+	}
+	// ADD product
+	@RequestMapping(value="adminAddProd", method=RequestMethod.POST)
+	public String viewAdminAddProd( ModelMap model,
+			@RequestParam("ID") String id,
+			@RequestParam("cat") String cat,
+			@RequestParam("name") String name,
+			@RequestParam("price") Float price, 
+			@RequestParam("image") String image) {
+		
+		Product prod = new Product();
+		prod.setIdProduct(id);
+		prod.setProductCategory(productDAL.getCat(cat));
+		prod.setName(name);
+		prod.setPrice(price);
+		prod.setImage(image);
+		
+		if(!productDAL.saveProduct(prod)) {
+			return "admin/adminAddProd";
+		}
+		
+		return "redirect:/admin/adminProducts.htm";
+	}
+	
+	
+	//DELETE PRoduct
+	@RequestMapping(value="deleteProduct/{id}", method=RequestMethod.GET)
+	public String DeleteProd( ModelMap model, @PathVariable("id") String id) {
+		System.out.println(id);
+		System.out.println(productDAL.deleteProduct(id));
+		return "redirect:/admin/adminProducts.htm";
+	}
+	
+	
+	
+	/////////////Manage MIX PRODUCT
+	@RequestMapping(value="adminProd/{idProduct}", method=RequestMethod.GET)
+	public String showColorSize( ModelMap model, @PathVariable("idProduct") String id) {
+		model.addAttribute("p", productDAL.getProduct(id));
+		model.addAttribute("listC", productDAL.getLCS(id));
+		model.addAttribute("size", productDAL.getLCS(id).size());
+		
+		return "admin/viewColorSize";
+	}
+	
+	@RequestMapping(value="addCS/{idProduct}", method=RequestMethod.GET)
+	public String addColorSize( ModelMap model, @PathVariable("idProduct") String id) {
+		model.addAttribute("p", productDAL.getProduct(id));
+		
+		
+		return "admin/addCS";
+	}
+	
+	@RequestMapping(value="addCS/{idProduct}", method=RequestMethod.POST)
+	public String addColorSize( ModelMap model, @PathVariable("idProduct") String id,
+			@RequestParam("color") String color,
+			@RequestParam("size") String size,
+			@RequestParam("quantity") Integer quantity) {
+		
+		model.addAttribute("p", productDAL.getProduct(id));
+	
+		SizeAndColor.PK pk = new SizeAndColor.PK();
+		pk.setColor(color);
+		pk.setProductID(id);
+		pk.setSize(size);
+		pk.setQuantity(quantity);
+		
+		SizeAndColor cs = new SizeAndColor();
+		cs.setPk(pk);
+		
+		if(!productDAL.saveCS(cs)) {
+			model.addAttribute("color", color);
+			model.addAttribute("size", size);
+			model.addAttribute("quantity", quantity);
+			
+			return "redirect:/admin/addCS/" + id + ".htm";
+		}
+		
+		return "redirect:/admin/colorSize/" + id + ".htm";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// Edit Product
+	@RequestMapping(value = { "editProd/{prodID}" }, method = RequestMethod.POST)
+	public String adminProduct(ModelMap model, @PathVariable("prodID") String prodID,
+			@RequestParam("cat") String cat,
+			@RequestParam("name") String name,
+			@RequestParam("price") Float price, 
+			@RequestParam("image") String image) {
+
+		
+		if(productDAL.updateProduct(prodID, cat, name, price, image)) {
+			return "redirect:/admin/adminProd/" + prodID +  ".htm";
+		}
+		
+		model.addAttribute("message", "Update failed!");
+		model.addAttribute("p", productDAL.getProduct(prodID));
+		model.addAttribute("listCats", productDAL.getLCat());
+		return "admin/adminEditProd";
+	}
+	
+	// Save edit product 
+	@RequestMapping(value = { "editProd/{prodID}" }, method = RequestMethod.GET)
 	public String adminProduct(ModelMap model, @PathVariable("prodID") String prodID) {
-		Product prod = getProduct(prodID);
+		Product prod = productDAL.getProduct(prodID);
 		model.addAttribute("p", prod); 
+		model.addAttribute("listCats", productDAL.getLCat());
 		
 		return "admin/adminEditProd";
 	}
 	
-	// Save  Product's Details
-		@RequestMapping(value = { "adminProducts" }, method = RequestMethod.POST)
-		public String adminSaveProduct(ModelMap model, 
-				@RequestParam("name") String name,
-				@RequestParam("price") Float price,
-				@RequestParam("color") String color,
-				@RequestParam("size") String size,
-				@RequestParam("quantity") Integer quantity,
-				@RequestParam("id") String id
-				) {
-			
-			Session session = factory.openSession();
-			Transaction t = session.beginTransaction();
-			
-			Product prod = (Product) session.get( Product.class, id);
-			
-			prod.setName(name);
-			prod.setPrice(price);
-			
-			
-			try {
-				session.update(prod);
-				t.commit();
-				
-			} catch( Exception e ) {
-				t.rollback();
-			} finally {
-				session.close();
-			}
-			
-			return "redirect:/admin/adminProducts.htm";
-		}
 	
-		
-	@RequestMapping("adminAddProd")
-	public String viewAdminAddProd( ModelMap model) {
-		model.addAttribute("listCats");
-		return "admin/adminAddProd";
-	}
-		
-		
-		
-		
-		
-	// Show Accounts' information
-	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
-	public String Customers(ModelMap model) {
-		List<Account> listAcc = getListAccount();
-		
-		model.addAttribute("listAccounts", listAcc);
-		model.addAttribute("size", listAcc.size());
-		return "admin/adminAccount";
-	}
+//	// Save  Product's Details
+//		@RequestMapping(value = { "adminProducts" }, method = RequestMethod.POST)
+//		public String adminSaveProduct(ModelMap model, 
+//				@RequestParam("name") String name,
+//				@RequestParam("price") Float price,
+//				@RequestParam("color") String color,
+//				@RequestParam("size") String size,
+//				@RequestParam("quantity") Integer quantity,
+//				@RequestParam("id") String id
+//				) {
+//			
+//			Session session = factory.openSession();
+//			Transaction t = session.beginTransaction();
+//			
+//			Product prod = (Product) session.get( Product.class, id);
+//			
+//			prod.setName(name);
+//			prod.setPrice(price);
+//			
+//			
+//			try {
+//				session.update(prod);
+//				t.commit();
+//				
+//			} catch( Exception e ) {
+//				t.rollback();
+//			} finally {
+//				session.close();
+//			}
+//			
+//			return "redirect:/admin/adminProducts.htm";
+//		}
+//	
+//		
 	
 	
-	
-	
-	
-	
-	// Show Orders' Details
-	@RequestMapping(value = { "adminBill" }, method = RequestMethod.GET)
-	public String adminBill(ModelMap model) {
-//		List<Order> listOrders = getLOrder();
-//		model.addAttribute("orders", listOrders);
-		return "admin/adminBill";
-	}
-	
-	@RequestMapping(value = { "adminBillInfo" }, method = RequestMethod.GET)
-	public String adminBillInfo(ModelMap model) {
-		return "admin/adminBillInfo";
-	}
-	
+//		
+//		
+//		
+//		
+//		
+//	// Show Accounts' information
+//	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
+//	public String Customers(ModelMap model) {
+//		List<Account> listAcc = getListAccount();
+//		
+//		model.addAttribute("listAccounts", listAcc);
+//		model.addAttribute("size", listAcc.size());
+//		return "admin/adminAccount";
+//	}
+//	
+//	
+//	
+//	
+//	
+//	
+//	// Show Orders' Details
+//	@RequestMapping(value = { "adminBill" }, method = RequestMethod.GET)
+//	public String adminBill(ModelMap model) {
+////		List<Order> listOrders = getLOrder();
+////		model.addAttribute("orders", listOrders);
+//		return "admin/adminBill";
+//	}
+//	
+//	@RequestMapping(value = { "adminBillInfo" }, method = RequestMethod.GET)
+//	public String adminBillInfo(ModelMap model) {
+//		return "admin/adminBillInfo";
+//	}
 	
 
-	
-	
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	@ModelAttribute("listAccounts")
-	public List<Account> getListAccount() {
-		Session session = factory.getCurrentSession();
-		String hql = "From Account";
-		Query query = session.createQuery(hql);
-		List<Account> listUser = query.list();
-		return listUser;
-	}
-	
-	@ModelAttribute("listProducts")
-	public List<Product> getListProduct() {
-		Session session = factory.getCurrentSession();
-		String hql = "From Product";
-		Query query = session.createQuery(hql);
-		List<Product> listProd = query.list();
-		return listProd;
-	}
-	
-	
-	@ModelAttribute("listCats")
-	public List<ProductCategory> getListCats() {
-		Session session = factory.getCurrentSession();
-		String hql = "From ProductCategory";
-		Query query = session.createQuery(hql);
-		List<ProductCategory> listCat = query.list();
-		return listCat;
-	}
-	
-
-	public Product getProduct(String prodID) {
-		Session session = factory.getCurrentSession();
-		Product prod = (Product) session.get(Product.class, prodID);
-		return prod;
-	}
-	
-	
 	
 	
 	
@@ -209,18 +315,18 @@ public class AdminController {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
-////	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
-////	public String adminHome(HttpServletRequest request, ModelMap model) {
-//////		List<Order> listOrder = getLOrder();
-//////		model.addAttribute("listOrder", listOrder);
-//////		HttpSession httpSession = request.getSession();
-//////		Account admin = (Account) httpSession.getAttribute("admin");
-//////		httpSession.setAttribute("admin", admin);
-//////		httpSession.setAttribute("totalCus", getLcus().size());
-//////		httpSession.setAttribute("totalAd", getLAdmin().size());
-//////		httpSession.setAttribute("totalOrder", getLOrder().size());
-////		return "admin/adminHome";
-////	}
+//	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
+//	public String adminHome(HttpServletRequest request, ModelMap model) {
+//		List<Order> listOrder = getLOrder();
+//		model.addAttribute("listOrder", listOrder);
+//		HttpSession httpSession = request.getSession();
+//		Account admin = (Account) httpSession.getAttribute("admin");
+//		httpSession.setAttribute("admin", admin);
+//		httpSession.setAttribute("totalCus", getLcus().size());
+//		httpSession.setAttribute("totalAd", getLAdmin().size());
+//		httpSession.setAttribute("totalOrder", getLOrder().size());
+//		return "admin/adminHome";
+//	}
 	
 
 //	// insert product

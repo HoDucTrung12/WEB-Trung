@@ -21,7 +21,7 @@ public class SizeAndColor {
 		private String productID;
 		private String size;
 		private String color;
-		private String quantity;
+		private Integer quantity;
 		
 		public String getProductID() {
 			return productID;
@@ -41,10 +41,10 @@ public class SizeAndColor {
 		public void setColor(String color) {
 			this.color = color;
 		}
-		public String getQuantity() {
+		public Integer getQuantity() {
 			return quantity;
 		}
-		public void setQuantity(String quantity) {
+		public void setQuantity(Integer quantity) {
 			this.quantity = quantity;
 		}
 		public static long getSerialversionuid() {

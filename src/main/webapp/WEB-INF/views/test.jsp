@@ -11,18 +11,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="" method="post">
-		<input name="mess">
-		
-		<button>Send</button>
-	</form>
-	
-	${message }
-	
-	<c:forEach var="n" items="${list}" begin="0" end="4" step="1">
-		<br>
-		${n[0]}, ${n[1].nameCategory}, ${n[2]}, ${n[3]}, ${n[4]}, ${n[5]}, ${n[6] }
-	</c:forEach>
+	<select>
+		<option>A</option>
+		<option selected>B</option>
+	</select>
 	
 </body>
 </html>

@@ -48,11 +48,15 @@ $(window).scroll(function () {
 
 
 
-
+$(selector).click(function (e) { 
+    e.preventDefault();
+    
+});
 
 
 ////////////////////////////////////////////////////
 $('button.quantity-minus').click(function (e) { 
+    e.preventDefault();
     let value = $('.form-control input').val();
     if(value > 1) {
         $('.form-control input').val(value - 1);
@@ -61,6 +65,8 @@ $('button.quantity-minus').click(function (e) {
 });
 
 $('button.quantity-plus').click(function (e) { 
+    e.preventDefault();
+
     let value = $('.form-control input').val();
     if(value < 100) {
         $('.form-control input').val(value*1 + 1);
