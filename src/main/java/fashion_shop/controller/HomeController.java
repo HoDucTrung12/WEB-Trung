@@ -32,33 +32,45 @@ public class HomeController {
 	SessionFactory factory;
 	
 	@Autowired
-	productDAO productDAO1;
+	productDAO productDAL;
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("index")	
 	public String index(ModelMap model) {
-		model.addAttribute("prods", productDAO1.getLProd());
+		model.addAttribute("prods", productDAL.getLProd());
 		return "home/index";
 	}
 	
-	// view products
+	// Show all products
 	@RequestMapping(value = { "products" })
 	public String view_product(ModelMap model) {
-		List<Product> list = productDAO1.getLProd();
-		int size = productDAO1.getLProd().size();
-		List<ProductCategory> listCate = productDAO1.getLCat();
+		
+		List<Product> list = productDAL.getLProd();
+		int size = productDAL.getLProd().size();
+		List<ProductCategory> listCate = productDAL.getLCat();
+		
 		model.addAttribute("listCat", listCate);
 		model.addAttribute("prods", list);
 		model.addAttribute("prodsSize", size);
+		
 		model.addAttribute("catON", "false");
+		
 		return "home/products";
 	}
 	
-	// view products by cat
+	// Show products by cat
 	@RequestMapping(value = { "products/{idCategory}" })
 	public String view_product(ModelMap model, @PathVariable("idCategory") String idCategory) {
-		List<Product> list = productDAO1.getLProd();
-		int size = productDAO1.getLProd().size();
-		List<ProductCategory> listCate = productDAO1.getLCat();
+		
+		List<Product> list = productDAL.getLProd();
+		int size = productDAL.getLProd().size();
+		List<ProductCategory> listCate = productDAL.getLCat();
+		
 		model.addAttribute("prods", list);
 		model.addAttribute("prodsSize", size);
 		model.addAttribute("listCat", listCate);
@@ -70,8 +82,8 @@ public class HomeController {
 		
 //	@RequestMapping(value = { "detail/{idProduct}" }, method = RequestMethod.GET)
 //	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String id) {
-//		model.addAttribute("product", productDAO1.Product(id));
-//		model.addAttribute("prods", productDAO1.getLProd());
+//		model.addAttribute("product", productDAL.getProduct(id));
+//		model.addAttribute("prods", productDAL.getLProd());
 //		return "home/detail";
 //	}
 	
@@ -89,15 +101,12 @@ public class HomeController {
 		cartItem.setUserPhone(account.getPhone());
 		cartItem.setIdProduct(product.getIdProduct());
 		cartItem.setName(product.getName());
-		cartItem.setColor(product.getColor());
-		cartItem.setSize(product.getSize());
 		cartItem.setPrice(product.getPrice());
-		cartItem.setQuantity(product.getQuantity());
 		cartItem.setImage(product.getImage());
 		
-		List<Product> list = productDAO1.getLProd();
-		int size = productDAO1.getLProd().size();
-		List<ProductCategory> listCate = productDAO1.getLCat();
+		List<Product> list = productDAL.getLProd();
+		int size = productDAL.getLProd().size();
+		List<ProductCategory> listCate = productDAL.getLCat();
 		model.addAttribute("prods", list); 
 		model.addAttribute("prodsSize", size);
 		model.addAttribute("listCat", listCate);

@@ -20,30 +20,15 @@ public class Product {
 
 	@Column(name = "Name")
 	private String name;
-	
-	@Column(name = "Color")
-	private String Color;
-
-	@Column(name = "Size")
-	private String size;
 
 	@Column(name = "Price")
 	private float price;
-	
-	@Column(name = "Quantity")
-	private Integer quantity;
 
 	@Column(name = "Image")
 	private String image;
 
 //	@OneToMany(mappedBy = "prod", fetch = FetchType.EAGER)
 //	private Collection<OrderDetail> orderDetails;
-	
-	@OneToMany(mappedBy = "idProd", fetch = FetchType.EAGER)
-	private Collection<Size> sizes;
-	
-	@OneToMany(mappedBy = "idProduct", fetch = FetchType.EAGER)
-	private Collection<Color> colors;
 	
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private Collection<Cart> carts;
@@ -68,36 +53,12 @@ public class Product {
 		this.name = name;
 	}
 
-	public String getColor() {
-		return Color;
-	}
-
-	public void setColor(String color) {
-		Color = color;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
 	public float getPrice() {
 		return price;
 	}
 
 	public void setPrice(float price) {
 		this.price = price;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	public String getImage() {
@@ -108,21 +69,6 @@ public class Product {
 		this.image = image;
 	}
 
-	public Collection<Size> getSizes() {
-		return sizes;
-	}
-
-	public void setSizes(Collection<Size> sizes) {
-		this.sizes = sizes;
-	}
-
-	public Collection<Color> getColors() {
-		return colors;
-	}
-
-	public void setColors(Collection<Color> colors) {
-		this.colors = colors;
-	}
 
 	public ProductCategory getProductCategory() {
 		return ProdCategory;

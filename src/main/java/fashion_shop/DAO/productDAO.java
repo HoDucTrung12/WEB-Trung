@@ -19,6 +19,20 @@ public class productDAO {
 	@Autowired
 	SessionFactory factory;
 	
+	//Get List Product includes Size, Color and Quantity 
+	//( mix between 2 Entity: Product & SizeAndColor)
+	public List<Object[]> getLMixProd() {
+		Session session = factory.getCurrentSession();
+		String hql = "select P.idProduct, P.ProdCategory, P.name, P.price, P.image, S.pk.color, S.pk.size, S.pk.quantity  " +
+				" from Product P, SizeAndColor S "
+				+ "where P.idProduct = S.pk.productID";
+		Query query = session.createQuery(hql);
+		List<Object[]> listProd = query.list();
+		return listProd;
+	}
+	
+	// Get List Product DOES NOT includes Size, Color and Quantity 
+	//( just Entity: Product)
 	public List<Product> getLProd() {
 		Session session = factory.getCurrentSession();
 		String hql = "from Product";
@@ -26,6 +40,8 @@ public class productDAO {
 		List<Product> listProd = query.list();
 		return listProd;
 	}
+	
+	
 	
 	public List<ProductCategory> getLCat() {
 		Session session = factory.getCurrentSession();
@@ -35,11 +51,12 @@ public class productDAO {
 		return listCat;
 	}
 	
-	public Product Product(String idProduct) {
+	
+	
+	public Product getProduct(String idProduct) {
 		Session session = factory.getCurrentSession();
 		String hql = "FROM Product where idProduct = " + idProduct;
 		Query query = session.createQuery(hql);
-//		query.setParameter("id", idProduct);
 		Product pd = (Product) query.list().get(0);
 		return pd;
 	}

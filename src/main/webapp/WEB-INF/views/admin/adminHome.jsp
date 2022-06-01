@@ -109,7 +109,7 @@
                         </a>
 
                         <!-- A report -->
-                        <a href="" class="col-12 report hx1">
+                        <a href="admin/adminProducts.htm" class="col-12 report hx1">
                             <h3>Manage <span class="bold">Products</span></h3>
                     
                             <div class="icon">

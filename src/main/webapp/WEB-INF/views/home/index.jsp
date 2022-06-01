@@ -103,7 +103,7 @@
 								</div>
 
 								<h5 class="title">Brand Sale</h5>
-							</a> <a href="home/products.htm" class="col-6 h-1">
+							</a> <a href="home/products/WATCHES.htm" class="col-6 h-1">
 								<div class="img">
 									<img
 										src="https://d-themes.com/html/riode/images/demos/demo4/categories/3.jpg"
@@ -112,7 +112,7 @@
 								</div>
 
 								<h5 class="title white">Top watches</h5>
-							</a> <a href="home/products.htm" class="col-6 h-1">
+							</a> <a href="home/products/SHOES.htm" class="col-6 h-1">
 								<div class="img">
 									<img
 										src="https://d-themes.com/html/riode/images/demos/demo4/categories/4.jpg"
@@ -189,7 +189,7 @@
 				<div class="owl-carousel owl-theme">
 
 					<!-- A product  -->
-					<c:forEach var="p" items="${prods}" begin="10" end="15" step="1">
+					<c:forEach var="p" items="${prods}" begin="5" end="10" step="1">
 						<div class="col-4 product">
 							<div class="product-image">
 								<img
@@ -199,17 +199,16 @@
 								<div class="new">NEW</div>
 
 								<a href="home/detail/${p.idProduct}.htm" class="btn-view">VIEW DETAILS</a> <a
-									href="cart/cart/{idProduct}.htm" class="btn-add"> <i
+									href="" class="btn-add"> <i
 									class="fa-solid fa-bag-shopping"></i>
 								</a>
 							</div>
 
 							<div class="product-content">
-								<a href="home/products.htm"
-									class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
+								<a href="home/products/${p.getProductCategory().getIdCategory()}.htm" class="product-category hover-p-color">${p.getProductCategory().getNameCategory() }</a>
 
 								<h2>
-									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
+									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name}</a>
 								</h2>
 
 								<p class="product-price">$${p.price }</p>
@@ -293,7 +292,7 @@
 				<div class="owl-carousel owl-theme">
 
 					<!-- A product  -->
-					<c:forEach var="p" items="${prods}" begin="5" end="10" step="1">
+					<c:forEach var="p" items="${prods}" begin="0" end="5" step="1">
 						<div class="col-4 product">
 							<div class="product-image">
 								<img
@@ -309,13 +308,13 @@
 							</div>
 
 							<div class="product-content">
-								<a href="" class="product-category hover-p-color">${p.getProductCategory().nameCategory }</a>
+								<a href="home/products/${p.getProductCategory().getIdCategory()}.htm" class="product-category hover-p-color">${p.getProductCategory().getNameCategory() }</a>
 
 								<h2>
-									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name }</a>
+									<a href="home/detail/${p.idProduct}.htm" class="product-name hover-p-color">${p.name}</a>
 								</h2>
 
-								<p class="product-price">${p.price }</p>
+								<p class="product-price">$${p.price }</p>
 
 								<div class="review">
 									<ul class="list-stars">

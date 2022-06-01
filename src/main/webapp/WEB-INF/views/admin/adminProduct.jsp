@@ -104,13 +104,13 @@
 						<c:forEach var="p" items="${listProducts }" begin="0" end="${size }">
     	 
     							<tr>
-		                            <td>${p.idProduct }</td>
-		                            <td>${p.name }</td>
-		                            <td>$${p.price }</td>
+		                            <td>${p[0] }</td>
+		                            <td>${p[2] }</td>
+		                            <td>$${p[3] }</td>
 		                            <td> </td>
 		                            <td> </td>
-		                            <td>${p.quantity }</td>
-		                            <td><a href="admin/adminEditProd/${p.idProduct  }.htm" style="color:#333;" class="icon"><i
+		                            <td>${p[7] }</td>
+		                            <td><a href="admin/adminEditProd/${p[0]  }.htm" style="color:#333;" class="icon"><i
 									class="fa-solid fa-pen"></i></a></td>
 							<td><a href="" class="icon"><i class="fa-solid fa-trash" style="color:#333;"></i></a></td>
 		                        </tr> 

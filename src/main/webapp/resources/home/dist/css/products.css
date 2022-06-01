@@ -530,6 +530,43 @@ header .header-middle .header-right .cart-group:hover .cart {
           transform: translateY(0);
 }
 
+header .header-middle .header-right .user-area {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #333;
+  font-weight: 600;
+}
+
+header .header-middle .header-right .user-area .user-name {
+  font-size: 14px;
+}
+
+header .header-middle .header-right .user-area .user-thumbnail {
+  width: 29px;
+  height: 29px;
+  overflow: hidden;
+  margin-left: 8px;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 1px solid #ccc;
+}
+
+header .header-middle .header-right .user-area:hover {
+  color: #1e90ff;
+}
+
 header .header-middle.fixed {
   position: fixed;
   top: 0;

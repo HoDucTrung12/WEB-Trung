@@ -17,6 +17,7 @@ import fashion_shop.entity.Account;
 public class accountDAO {
 	@Autowired
 	SessionFactory factory;
+	
 	public List<Account> getLUser() {
 		Session session = factory.getCurrentSession();
 		String hql = "From Account";

@@ -73,8 +73,12 @@
                 }
             }
 
-            button {
+            button,
+            .btn-login {
                 margin-top: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
                 width: 100%;
                 cursor: pointer;
@@ -90,6 +94,7 @@
                     opacity: 0.9;
                 }
             }
+
 
             &.login-form {
                 width: 500px;

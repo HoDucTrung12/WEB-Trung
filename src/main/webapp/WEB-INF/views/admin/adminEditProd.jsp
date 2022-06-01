@@ -32,7 +32,7 @@
 
         <ul class="functions">
             <li class="function">
-                <a href="admin/adminAccount.htm" class="active">
+                <a href="admin/adminAccount.htm" >
                     <div class="icon">
                         <i class="fa-solid fa-users"></i>
                     </div>
@@ -51,7 +51,7 @@
             </li>
 
             <li class="function">
-                <a href="admin/adminProducts.htm">
+                <a href="admin/adminProducts.htm" class="active">
                     <div class="icon">
                         <i class="fa-solid fa-shirt"></i>
                     </div>
@@ -92,65 +92,70 @@
 
         <!-- Main talbe data  -->
         <div class="main-content">
-            <div class="row">
-                <div class="col-4 image">
-                    <img src="${p.image }" alt="">
-                </div>
+            <form action="admin/adminProducts.htm" method="post">
+            	<div class="row">
+	                <div class="col-4 image">
+	                    <img src="${p.image }" alt="">
+	                </div>
+	            
+	                <div class="col-8">
+	                    <div class="row info">
+	                        <div class="col-6 field id">
+	                            <label for="">ID:</label>
+	                            <input type="text" value="${p.idProduct }" readonly name="id"> 
+	                        </div>
+	    
+	                        <div class="col-6 field name">
+	                            <label for="">Category:</label>
+	                            <input type="text" value="Shirt" readonly >
+	                        </div>
+	
+	
+	                        <div class="col-6 field name">
+	                            <label for="">Name:</label>
+	                            <input type="text" value="${p.name }" name="name">
+	                        </div>
+	    
+	                        <div class="col-6 field price">
+	                            <label for="">Price:</label>
+	                            <input type="number" id="" value="${p.price }" name="price">
+	                        </div>
+	    
+	                        <div class="col-6 field color">
+	                            <label for="">Color:</label>
+	                            <input type="text" name="color" id="" value="White"  >
+	                        </div>
+	    
+	                        <div class="col-6 field size">
+	                            <label for="">Size:</label>
+	                            <input type="text" value="Small" name="size" id="" >
+	                        </div>
+	    
+	                        <div class="col-6 field quantity">
+	                            <label for="">Quantity:</label>
+	                            <div class="form-control">
+	                                <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
+	                                <input type="number" name="quantity" value="${p.quantity }" min="1" max="100" >
+	                                <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
+	                            </div>
+	    
+	                        </div>
+	
+	                        <div class="col-6 field">
+	                            <label for="">Image file:</label>
+	                            <input type="file">
+	                        </div>
+	
+	                    </div>
+	                </div>
+	            </div>
+	
+	            
+	            <button class="col-6 btn-save">Save changes</button>
             
-                <div class="col-8">
-                    <div class="row info">
-                        <div class="col-6 field id">
-                            <label for="">ID:</label>
-                            <input type="text" value="${p.idProduct }" readonly> 
-                        </div>
-    
-                        <div class="col-6 field name">
-                            <label for="">Category:</label>
-                            <input type="text" value="Shirt" readonly>
-                        </div>
-
-
-                        <div class="col-6 field name">
-                            <label for="">Name:</label>
-                            <input type="text" value="${p.name }">
-                        </div>
-    
-                        <div class="col-6 field price">
-                            <label for="">Price:</label>
-                            <input type="number" name="" id="" value="${p.price }">
-                        </div>
-    
-                        <div class="col-6 field color">
-                            <label for="">Color:</label>
-                            <input type="text" name="" id="" value="White" readonly>
-                        </div>
-    
-                        <div class="col-6 field size">
-                            <label for="">Size:</label>
-                            <input type="text" value="Small" name="" id="" readonly>
-                        </div>
-    
-                        <div class="col-6 field quantity">
-                            <label for="">Quantity:</label>
-                            <div class="form-control">
-                                <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
-                                <input type="number" value="${p.quantity }" min="1" max="100">
-                                <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
-                            </div>
-    
-                        </div>
-
-                        <div class="col-6 field">
-                            <label for="">Image file:</label>
-                            <input type="file">
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
+            </form>
             
-            <button class="col-6 btn-save">Save changes</button>
+            
 
         </div>
     </main>

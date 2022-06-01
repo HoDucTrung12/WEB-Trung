@@ -177,6 +177,12 @@
   background-color: #1e90ff;
   margin-right: 12px;
   color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.aside .admin .logo img {
+  position: absolute;
 }
 
 .aside .functions .function a {

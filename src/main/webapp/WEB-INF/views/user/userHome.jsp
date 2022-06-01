@@ -85,7 +85,6 @@
                 <div class="col-4">
                     <div class="logo">
                         <i class="fa-solid fa-t"></i>
-
                     </div>
                 </div>
                 

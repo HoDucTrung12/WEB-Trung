@@ -40,8 +40,10 @@ import fashion_shop.entity.Account;
 import fashion_shop.entity.Order;
 import fashion_shop.entity.OrderDetail;
 import fashion_shop.entity.Product;
+import fashion_shop.entity.ProductCategory;
 import fashion_shop.entity.Role;
 import fashion_shop.DAO.adminDAO;
+import fashion_shop.DAO.productDAO;
 
 @Transactional
 @Controller
@@ -50,6 +52,9 @@ import fashion_shop.DAO.adminDAO;
 public class AdminController {
 	@Autowired
 	SessionFactory factory;
+	
+	@Autowired
+	productDAO prodDAO;
 	
 	// Admin Home
 	@RequestMapping(value = { "adminHome" }, method = RequestMethod.GET)
@@ -62,10 +67,9 @@ public class AdminController {
 	// Show List Products
 	@RequestMapping(value = { "adminProducts" }, method = RequestMethod.GET)
 	public String adminListProducts(ModelMap model) {
-		List<Product> listProd = getListProduct();
 		
-		model.addAttribute("listProducts", listProd);
-		model.addAttribute("size", listProd.size());
+		model.addAttribute("listProducts", prodDAO.getLMixProd());
+		model.addAttribute("size", prodDAO.getLMixProd().size());
 		
 		return "admin/adminProduct";
 	}
@@ -75,14 +79,55 @@ public class AdminController {
 	@RequestMapping(value = { "adminEditProd/{prodID}" }, method = RequestMethod.GET)
 	public String adminProduct(ModelMap model, @PathVariable("prodID") String prodID) {
 		Product prod = getProduct(prodID);
-		System.out.println("This is forking ID" + prodID);
 		model.addAttribute("p", prod); 
 		
 		return "admin/adminEditProd";
 	}
 	
+	// Save  Product's Details
+		@RequestMapping(value = { "adminProducts" }, method = RequestMethod.POST)
+		public String adminSaveProduct(ModelMap model, 
+				@RequestParam("name") String name,
+				@RequestParam("price") Float price,
+				@RequestParam("color") String color,
+				@RequestParam("size") String size,
+				@RequestParam("quantity") Integer quantity,
+				@RequestParam("id") String id
+				) {
+			
+			Session session = factory.openSession();
+			Transaction t = session.beginTransaction();
+			
+			Product prod = (Product) session.get( Product.class, id);
+			
+			prod.setName(name);
+			prod.setPrice(price);
+			
+			
+			try {
+				session.update(prod);
+				t.commit();
+				
+			} catch( Exception e ) {
+				t.rollback();
+			} finally {
+				session.close();
+			}
+			
+			return "redirect:/admin/adminProducts.htm";
+		}
 	
-	
+		
+	@RequestMapping("adminAddProd")
+	public String viewAdminAddProd( ModelMap model) {
+		model.addAttribute("listCats");
+		return "admin/adminAddProd";
+	}
+		
+		
+		
+		
+		
 	// Show Accounts' information
 	@RequestMapping(value = { "adminAccount" }, method = RequestMethod.GET)
 	public String Customers(ModelMap model) {
@@ -111,10 +156,7 @@ public class AdminController {
 		return "admin/adminBillInfo";
 	}
 	
-	@RequestMapping("adminAddProd")
-	public String viewAdminAddProd() {
-		return "admin/adminAddProd";
-	}
+	
 
 	
 	
@@ -138,12 +180,19 @@ public class AdminController {
 		return listProd;
 	}
 	
+	
+	@ModelAttribute("listCats")
+	public List<ProductCategory> getListCats() {
+		Session session = factory.getCurrentSession();
+		String hql = "From ProductCategory";
+		Query query = session.createQuery(hql);
+		List<ProductCategory> listCat = query.list();
+		return listCat;
+	}
+	
 
 	public Product getProduct(String prodID) {
 		Session session = factory.getCurrentSession();
-//		String hql = "From Product where ";
-//		Query query = session.createQuery(hql);
-//		Product prod = (Product) query.uniqueResult();
 		Product prod = (Product) session.get(Product.class, prodID);
 		return prod;
 	}

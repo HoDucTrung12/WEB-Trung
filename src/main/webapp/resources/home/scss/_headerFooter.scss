@@ -352,6 +352,36 @@ header {
                     }
                 }
             }
+
+            .user-area {
+                display: flex;
+                align-items: center;
+                color: #333;
+                font-weight: 600;
+                .user-name {
+                    font-size: 14px;
+                }
+
+                .user-thumbnail {
+                    width: 29px;
+                    height: 29px;
+                    overflow: hidden;
+                    margin-left: 8px;
+
+                    border-radius: 50%;
+                    
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    border: 1px solid #ccc;
+                }
+
+                &:hover {
+                    color: $color-primary;
+                }
+            }
         }
 
         &.fixed {

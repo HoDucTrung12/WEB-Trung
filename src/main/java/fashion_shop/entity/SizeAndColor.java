@@ -1,0 +1,67 @@
+package fashion_shop.entity;
+
+import java.io.Serializable;
+
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+ 
+@Entity
+@Table(name = "SizeAndColor")
+public class SizeAndColor {
+	@EmbeddedId
+	private PK pk ;
+	
+	@Embeddable
+	public static class PK  implements Serializable {
+		
+		private static final long serialVersionUID = 1L;
+		
+		private String productID;
+		private String size;
+		private String color;
+		private String quantity;
+		
+		public String getProductID() {
+			return productID;
+		}
+		public void setProductID(String productID) {
+			this.productID = productID;
+		}
+		public String getSize() {
+			return size;
+		}
+		public void setSize(String size) {
+			this.size = size;
+		}
+		public String getColor() {
+			return color;
+		}
+		public void setColor(String color) {
+			this.color = color;
+		}
+		public String getQuantity() {
+			return quantity;
+		}
+		public void setQuantity(String quantity) {
+			this.quantity = quantity;
+		}
+		public static long getSerialversionuid() {
+			return serialVersionUID;
+		}
+		 
+		
+	}
+
+	public PK getPk() {
+		return pk;
+	}
+
+	public void setPk(PK pk) {
+		this.pk = pk;
+	}
+
+	
+	
+}

@@ -92,24 +92,27 @@
         <div class="main-content">
             <div class="row">
                 <div class="col-4 image">
-                    <img src="https://d-themes.com/html/riode/images/demos/demo4/product/product-1-580x652.jpg" alt="">
+                    <div class="cloth-temp">
+                        <i class="fa-solid fa-cloud-arrow-down"></i>
+                    </div>
                 </div>
             
                 <div class="col-8">
                     <div class="row info">
                         <div class="col-6 field id">
                             <label for="">ID:</label>
-                            <input type="text" value="Shirt1"  > 
+                            <input type="text" value="" placeholder="Type product ID here..." > 
                         </div>
     
                         <div class="col-6 field name">
                             <label for="">Category:</label>
                             <div class="product-form">
                                 <select name="" id="">
-                                    <option value="black">Black</option>
-                                    <option value="blue">Blue</option>
-                                    <option value="green">Green</option>
-                                    <option value="yellow">Yellow</option>
+                                    
+                                    <c:forEach var="c" items="${listCats }" begin="0" end="6">
+                                    	<option value="c.idCategory">${c.nameCategory }</option>
+                                    </c:forEach>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -117,12 +120,12 @@
 
                         <div class="col-6 field name">
                             <label for="">Name:</label>
-                            <input type="text" value="The good Shirt">
+                            <input type="text" value="" placeholder="Type product name here...">
                         </div>
     
                         <div class="col-6 field price">
                             <label for="">Price:</label>
-                            <input type="number" name="" id="" value="37.99">
+                            <input type="number" name="" id="" value="59.99">
                         </div>
     
                         <div class="col-6 field color">

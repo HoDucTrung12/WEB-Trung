@@ -44,16 +44,19 @@ public class UserController {
 	@Autowired
 	accountDAO accountDAO;
 	
-	// Đăng Ký
+	@Autowired
+	ServletContext context;
+	
+	
+	
+	// Register GET
 	@RequestMapping(value = "register", method = RequestMethod.GET)
 	public String register(ModelMap model) {
 		model.addAttribute("user", new Account());
 		return "user/register";
 	}
 	
-	@Autowired
-	ServletContext context;
-	
+	// Register POST
 	@RequestMapping(value = "register", method = RequestMethod.POST)
 	public String register(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors
 			,@RequestParam("passwordagain") String passwordagain,
@@ -155,7 +158,10 @@ public class UserController {
 		return "user/register";
 	}
 
-	// Đăng Nhập
+	
+	
+	
+	// Login
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public String login(ModelMap model) {
 		model.addAttribute("user", new Account());

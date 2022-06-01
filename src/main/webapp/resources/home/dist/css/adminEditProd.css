@@ -177,6 +177,12 @@
   background-color: #1e90ff;
   margin-right: 12px;
   color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.aside .admin .logo img {
+  position: absolute;
 }
 
 .aside .functions .function a {
@@ -279,6 +285,26 @@ body {
 
 .main-header .map a:hover {
   color: #1e90ff;
+}
+
+.main .cloth-temp {
+  height: 90%;
+  width: 100%;
+  background-color: #ccc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main .cloth-temp i {
+  font-size: 100px;
+  color: #eee;
 }
 
 .main .field {

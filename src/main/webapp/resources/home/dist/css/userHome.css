@@ -177,6 +177,12 @@
   background-color: #1e90ff;
   margin-right: 12px;
   color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+.aside .admin .logo img {
+  position: absolute;
 }
 
 .aside .functions .function a {
@@ -325,6 +331,14 @@ body {
   background-color: #1e90ff;
   color: white;
   border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+.main .logo img {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
 }
 
 .main .btn-change {
