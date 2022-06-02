@@ -90,8 +90,13 @@
                 
                 <div class="col-4">
                     
+                    <label for="">Username:</label>
                     <input type="text" placeholder= "Username" value="${acc.getUser_name() }" readonly>
+                    
+                    <label for="">Full name:</label>
                     <input type="text" placeholder="FullName" value= "${acc.getFullname() }" readonly>
+                    
+                    <label for="">Email:</label>
                     <input type="email" placeholder="Email" value= "${acc.getEmail() }" readonly>
                     
                     <!-- <select name="" id="" reaonly>
@@ -104,13 +109,19 @@
                 </div>
                 
                 <div class="col-4">
+                
+                	<label for="">Birthday:</label>
                     <input type="date" placeholder="Birthday" value="${acc.getBirthday() }" readonly>
+                    
+                    <label for="">Number:</label>
                     <input type="number" placeholder="PhoneNumber" value= "${acc.getPhone() }" readonly>
+                    
+                    <label for="">Address:</label>
                     <input type="text" placeholder="Address" value= "${acc.getAddress() }" readonly>
                 </div>
             </div>
 
-            <button class="btn-change">Change Information</button>
+            <a href="user/changeInfor/${acc.user_name }.htm" class="btn-change">Change Information</a>
 
         </div>
     </main>

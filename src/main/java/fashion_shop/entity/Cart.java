@@ -17,8 +17,8 @@ public class Cart {
 	@Column(name = "Id", nullable = false)
 	private Integer id;
 
-	@Column(name = "Phone", nullable = false)
-	private String phone;
+	@Column(name = "username", nullable = false)
+	private String username;
 
 	@ManyToOne
 	@JoinColumn(name="ProductID")
@@ -32,10 +32,10 @@ public class Cart {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cart(Integer id, String phone, Product product, Integer quantity) {
+	public Cart(Integer id, String username, Product product, Integer quantity) {
 		super();
 		this.id = id;
-		this.phone = phone;
+		this.username = username;
 		this.product = product;
 		this.quantity = quantity;
 	}
@@ -48,12 +48,12 @@ public class Cart {
 		this.id = id;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setUsername(String phone) {
+		this.username = phone;
 	}
 
 	public Product getProduct() {

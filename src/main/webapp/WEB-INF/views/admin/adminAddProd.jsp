@@ -141,7 +141,7 @@
 	            </div>
 	
 	            
-	            <button class="col-6 btn-save">Add product</button>
+	            <button class="col-6 btn">Add product</button>
 	            
             </form>
             
