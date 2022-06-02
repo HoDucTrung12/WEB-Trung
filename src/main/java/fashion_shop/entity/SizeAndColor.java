@@ -13,6 +13,9 @@ public class SizeAndColor {
 	@EmbeddedId
 	private PK pk ;
 	
+
+	private Integer quantity;
+	
 	@Embeddable
 	public static class PK  implements Serializable {
 		
@@ -21,7 +24,6 @@ public class SizeAndColor {
 		private String productID;
 		private String size;
 		private String color;
-		private Integer quantity;
 		
 		public String getProductID() {
 			return productID;
@@ -41,16 +43,12 @@ public class SizeAndColor {
 		public void setColor(String color) {
 			this.color = color;
 		}
-		public Integer getQuantity() {
-			return quantity;
-		}
-		public void setQuantity(Integer quantity) {
-			this.quantity = quantity;
-		}
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-		 
+		
+		
+	
 		
 	}
 
@@ -62,6 +60,10 @@ public class SizeAndColor {
 		this.pk = pk;
 	}
 
-	
-	
+	public Integer getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 }

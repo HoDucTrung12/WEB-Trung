@@ -128,13 +128,13 @@
     	 					<tr>
 								<td>${c.pk.color }</td>
 								<td>${c.pk.size }</td>
-								<td>${c.pk.quantity }</td>
+								<td>${c.quantity }</td>
 								<td>
-                                <a href="" class="btn-func" style="background-color: #1abc9c;"><i class="fa-solid fa-pen"></i></a>
+                                <a href="admin/editCS/${p.idProduct }_${c.pk.color}_${c.pk.size}.htm" class="btn-func" style="background-color: #1abc9c;"><i class="fa-solid fa-pen"></i></a>
 
                             </td>
                             <td>
-                                <a href="" class="btn-func" style="background-color: #c0392b;"><i class="fa-solid fa-trash-can"></i></a>
+                                <a href="admin/deleteCS/${p.idProduct }_${c.pk.color}_${c.pk.size}.htm" class="btn-func" style="background-color: #c0392b;"><i class="fa-solid fa-trash-can"></i></a>
                             </td>
 							</tr> 
     					</c:forEach>
@@ -145,6 +145,9 @@
 			</div>
 			
 			<a href="admin/deleteProduct/${p.idProduct }.htm" class="btn" style="left: 320px; right: unset; background-color: #c0392b;">DELETE THIS PRODUCT</a>
+            
+            <a href="admin/adminProducts.htm" class="btn" style="right: 320px; background-color: #efefef; color: #666;">Back</a>
+            <a href="admin/editProd/${p.idProduct}.htm" class="btn" style="right: 180px;">Edit</a>
             <a href="admin/addCS/${p.idProduct }.htm" class="btn">Add</a>
 		</div>
 	</main>

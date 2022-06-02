@@ -378,7 +378,7 @@ body {
   border-radius: 0  3px 3px 0;
 }
 
-.main .btn-save {
+.main .btn {
   background-color: #1e90ff;
   padding: 12px 20px;
   color: white;
@@ -394,10 +394,10 @@ body {
   cursor: pointer;
   position: absolute;
   right: 80px;
-  bottom: 40px;
+  bottom: 20px;
 }
 
-.main .btn-save:hover {
+.main .btn:hover {
   opacity: 0.9;
 }
 

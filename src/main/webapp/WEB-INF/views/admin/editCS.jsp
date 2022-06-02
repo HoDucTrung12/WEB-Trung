@@ -85,61 +85,51 @@
 		<!-- Main talbe data  -->
 		<div class="main-content">
 			<table>
-					<tr>
-						<th>ID</th>
-						<th>Image</th>
-						<th>Category</th>
-						<th>Name</th>
-						<th>Price</th>
-					</tr>
+				<tr>
+					<th>ID</th>
+					<th>Image</th>
+					<th>Category</th>
+					<th>Name</th>
+					<th>Price</th>
+				</tr>
 
-					<div class="scroll">
-						
-						
-    	 
-    							<tr>
-		                            <td>${p.idProduct }</td>
-		                            <td><img style="width: 120px;" src="${p.image }"  ></td>
-		                            <td>${p.getProductCategory().nameCategory }</td>
-		                            <td>${p.name }</td>
-		                            <td>$${p.price }</td>
-		                        </tr> 
-    					
-					</div>
-
-				</table>
+				<tr>
+		        	<td>${p.idProduct }</td>
+		           	<td><img style="width: 120px; margin: 0 auto;" src="${p.image }"  ></td>
+		            <td>${p.getProductCategory().nameCategory }</td>
+		            <td>${p.name }</td>
+		            <td>$${p.price }</td>
+		        </tr> 
+    		</table>
 		
 		
 			<div class="table-container">
-				
-				
 				<form method="post">
-					<table>
-						<tr>
-							<th>Color</th>
-							<th>Size</th>
-							<th>Quantity</th>
-						</tr>
-	
-						<div class="scroll">
-	    	 				<tr>
-								<td><input type="text" name="color" placeholder="Type color here..."></td>
-								<td><input type="text" name="size" placeholder="Type size here..."></td>
-								<td><input type="number" name="quantity" placeholder="Type quantity here..."></td>
-								
-	    					</tr>
-						</div>
-	
-					</table>
-					
-					<a href="admin/adminProd/${p.idProduct }.htm" class="btn" style="right: 180px; background-color: #efefef; color: #666;">Cancel</a>
-					<button class="btn">Add</a>
+				<table>
+					<tr>
+						<th>Color</th>
+						<th>Size</th>
+						<th>Quantity</th> 
+					</tr>
+
+						
+    	 			<tr>
+						<td>${c.pk.color }</td>
+						<td>${c.pk.size }</td>
+						<td><input type="number" name="quantity" value="${c.quantity }"> </td>
+								 
+					</tr> 
+    				
+				</table>
+				
+				<a href="admin/adminProd/${p.idProduct }.htm" class="btn" style="right: 180px; background-color: #efefef; color: #666;">Cancel</a>
+				<button class="btn">Save</button>
+				
 				</form>
-			</div>
+		 	
 			
-			
-            
-		</div>
+			 </div>
+            </div>
 	</main>
 
 

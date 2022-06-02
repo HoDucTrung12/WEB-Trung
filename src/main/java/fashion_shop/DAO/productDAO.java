@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import fashion_shop.entity.Product;
 import fashion_shop.entity.ProductCategory;
 import fashion_shop.entity.SizeAndColor;
+import fashion_shop.entity.SizeAndColor.PK;
 
 @Transactional
 @Repository
@@ -165,6 +166,19 @@ public class productDAO {
 		return list;
 	}
 	
+	public SizeAndColor getCS( String ID, String color, String size) {
+		Session session = factory.getCurrentSession();
+		
+		SizeAndColor.PK pk = new SizeAndColor.PK();
+		pk.setProductID(ID);
+		pk.setColor(color);
+		pk.setSize(size);
+		
+		SizeAndColor cs = (SizeAndColor) session.get(SizeAndColor.class, pk);
+		
+		return cs;
+	}
+	
 	public boolean saveCS(SizeAndColor cs) {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
@@ -180,6 +194,66 @@ public class productDAO {
 			session.close();
 		}
 		System.out.println("Insert cs Success!");
+		return true;
+	}
+	
+	public boolean deleteCS( String id, String color, String size) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		
+		SizeAndColor.PK pk = new SizeAndColor.PK();
+		pk.setProductID(id);
+		pk.setColor(color);
+		pk.setSize(size);
+		
+		SizeAndColor cs = (SizeAndColor) session.get(SizeAndColor.class, pk);
+		
+		if(cs ==null) {
+			System.out.println("NULL");
+		} else {
+			System.out.println("NOT NULL");
+		}
+		
+		try {
+			session.delete(cs);
+			t.commit();
+		} catch(Exception e) {
+			t.rollback();
+			System.out.println("Delete cs Failed");
+			System.out.println(e);
+			return false;
+		} finally {
+			session.close();
+		}
+		System.out.println("Delete cs Success!");
+		return true;
+	}
+	
+	public boolean updateCS( String id, String color, String size, Integer quantity) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		
+		SizeAndColor.PK pk = new SizeAndColor.PK();
+		pk.setProductID(id);
+		pk.setColor(color);
+		pk.setSize(size);
+		
+		SizeAndColor cs = (SizeAndColor) session.get(SizeAndColor.class, pk);
+		cs.setQuantity(quantity);
+	 
+		
+		try {
+			session.update(cs);
+			t.commit();
+		} catch(Exception e) {
+			t.rollback();
+			System.out.println("Update cs Failed");
+			System.out.println(e);
+			return false;
+		} finally {
+			session.close();
+		}
+		System.out.println("Update cs Success!");
 		return true;
 	}
 }

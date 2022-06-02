@@ -140,8 +140,8 @@
 	            </div>
 	
 	            
-	            <button class="col-6 btn-save">Save changes</button>
-            
+            	<a href="admin/adminProd/${p.idProduct }.htm" class="btn" style="right: 240px; background-color: #efefef; color: #666;">Cancel</a>
+	            <button class="col-6 btn">Save changes</button>
             </form>
             
             

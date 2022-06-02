@@ -95,7 +95,7 @@
                         <th>Email</th>
                         <th>Gender</th>
                         <th>Birthday</th>
-                        <th>Phone number</th>
+                        <th>Phone</th>
                         <th>Address</th> 
                     </tr>
     

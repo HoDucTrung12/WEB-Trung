@@ -180,10 +180,11 @@ public class AdminController {
 		pk.setColor(color);
 		pk.setProductID(id);
 		pk.setSize(size);
-		pk.setQuantity(quantity);
+		
 		
 		SizeAndColor cs = new SizeAndColor();
 		cs.setPk(pk);
+		cs.setQuantity(quantity);
 		
 		if(!productDAL.saveCS(cs)) {
 			model.addAttribute("color", color);
@@ -193,15 +194,51 @@ public class AdminController {
 			return "redirect:/admin/addCS/" + id + ".htm";
 		}
 		
-		return "redirect:/admin/colorSize/" + id + ".htm";
+		return "redirect:/admin/adminProd/" + id + ".htm";
 	}
 	
 	
+	@RequestMapping(value="deleteCS/{idProduct}_{color}_{size}", method=RequestMethod.GET)
+	public String deleteColorSize( ModelMap model, 
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String color,
+			@PathVariable("size") String size) {
+		
+		System.out.println(id);
+		System.out.println(color);
+		System.out.println(size);
+		
+		productDAL.deleteCS(id, color, size);
+		return "redirect:/admin/adminProd/" + id + ".htm";
+	}
 	
+	@RequestMapping(value="editCS/{idProduct}_{color}_{size}", method=RequestMethod.GET)
+	public String editColorSize( ModelMap model, 
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String color,
+			@PathVariable("size") String size) {
+		
+		model.addAttribute("p", productDAL.getProduct(id));
+		model.addAttribute("c", productDAL.getCS(id, color, size));
+		 
+		return "admin/editCS";
+	}
 	
-	
-	
-	
+	@RequestMapping(value="editCS/{idProduct}_{color}_{size}", method=RequestMethod.POST)
+	public String editColorSize( ModelMap model, 
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String color,
+			@PathVariable("size") String size,
+			@RequestParam("quantity") Integer quantity) {
+		
+		productDAL.updateCS(id, color, size, quantity);
+		 
+		model.addAttribute("p", productDAL.getProduct(id));
+		model.addAttribute("listC", productDAL.getLCS(id));
+		model.addAttribute("size", productDAL.getLCS(id).size());
+		
+		return "admin/viewColorSize";
+	} 
 	
 	
 	// Edit Product
