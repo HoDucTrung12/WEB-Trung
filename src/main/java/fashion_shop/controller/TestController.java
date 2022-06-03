@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import fashion_shop.DAO.productDAO;
-import fashion_shop.entity.Name;
 
 
 @Controller

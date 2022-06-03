@@ -39,7 +39,7 @@
             </li>
 
             <li class="function">
-                <a href="user/changepassword/{acc}.htm" class="active">
+                <a href="user/changepassword.htm" class="active">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>
@@ -80,7 +80,7 @@
         </div>
 
         <div class="main-content">
-            <form:form action="changepassword.htm">
+            <form:form action="user/changepassword.htm">
                 <h2>Change password</h2>
 
                 <input type="password" name = "oldPassword" placeholder="Old Password"/>
@@ -90,11 +90,11 @@
                 <input type="password" name = "newPasswordAgain" placeholder="New Password Again"/>
                 <p>${message3 }</p>
                 
-				<a href = "changepassword/${acc}.htm?changePass" >
+				<a href = "user/changepassword.htm" >
 					<button>Change</button>
 				</a>
                 
-                <h2>${message }</h2>
+                <p>${message }</p>
             </form:form>
 
         </div>

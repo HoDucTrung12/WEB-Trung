@@ -293,8 +293,8 @@ public class UserController {
 		return "user/changePassword";
 	}
 	
-	@RequestMapping(value = { "changepassword" }, params = "changePass",method = RequestMethod.POST)
-	public String change_password(ModelMap model, HttpServletRequest request,
+	@RequestMapping(value = { "changepassword" },method = RequestMethod.POST)
+	public String change_password(ModelMap model ,HttpServletRequest request,
 			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
 			@RequestParam("newPasswordAgain") String newPasswordAgain) {
 		Session session = factory.openSession();
@@ -302,21 +302,25 @@ public class UserController {
 		HttpSession httpSession = request.getSession();
 		Account user = (Account) httpSession.getAttribute("acc");
 
-		System.out.println("1");
+
 		if (!user.getPassword().equals(oldPassword)) {
-			System.out.println("2");
 			model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
-			return "redicrect:/user/changepassword/${acc }.htm?changePass";
 		}
-		if (oldPassword.length() == 0)
-			model.addAttribute("message1", "Mật khẩu không được để trống");
-		if (newPassword == null)
+		if (oldPassword.length() == 0) {
+			model.addAttribute("message1", "Mật khẩu không được để trống");			
+		}
+		
+		if (newPassword.length() == 0) {
 			model.addAttribute("message2", "Mật khẩu không được để trống");
-		if (newPasswordAgain == null)
+		}
+
+		if (newPasswordAgain.length() == 0) {
 			model.addAttribute("message3", "Mật khẩu không được để trống");
+		}
+//				errors.rejectValue("newPasswordAgain", "user", "Mật khẩu không được để trống");
 		else if (!newPassword.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")
 				|| !newPasswordAgain.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
-			model.addAttribute("message", "Nhập trên 8 kí tự trong đó có chữ Hoa thường và ký tự đặc biệt");
+			model.addAttribute("message", "Mật khẩu mới cần trên 8 kí tự trong đó có chữ Hoa thường và ký tự đặc biệt");
 		else if (!newPassword.equals(newPasswordAgain)) {
 			System.out.println("2");
 			model.addAttribute("message", "Mật khẩu mới không trùng nhau !");
@@ -326,18 +330,14 @@ public class UserController {
 		}
 		
 		else {
-			System.out.println("4");
 			try
 			{
-				System.out.println("5");
 				user.setPassword(newPassword);
 				session.update(user);
 				t.commit();
 				model.addAttribute("message", "Thay đổi mật khẩu thành công!");
 				httpSession.setAttribute("user", user);
-			} catch (
-
-			Exception e) {
+			} catch (Exception e) {
 				model.addAttribute("message", "Thay đổi mật khẩu thất bại!");
 				t.rollback();
 			} finally {
@@ -354,12 +354,6 @@ public class UserController {
 		Account user = (Account) httpSession.getAttribute("user");
 		httpSession.setAttribute("user", user);
 		model.addAttribute("user", user);
-		return "user/userHome";
-	}
-	
-	@RequestMapping(value = { "userHome" }, method = RequestMethod.POST)
-	public String viewUserHome(ModelMap model, @ModelAttribute("user") Account user, BindingResult errors) {
-		
 		return "user/userHome";
 	}
 	

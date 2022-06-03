@@ -40,7 +40,7 @@
             </li>
 
             <li class="function">
-                <a href="user/changepassword/{acc}.htm" class="">
+                <a href="user/changepassword.htm" class="">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>

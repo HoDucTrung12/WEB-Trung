@@ -59,14 +59,14 @@ public class CartController {
 			Product product = new Product();
 			product.setIdProduct(cartItem.getIdProduct());
 			product.setName(cartItem.getName());
-			product.setColor(cartItem.getColor());
-			product.setSize(cartItem.getSize());
+			//product.setColor(cartItem.getColor());
+			//product.setSize(cartItem.getSize());
 			product.setPrice(cartItem.getPrice());
-			product.setQuantity(cartItem.getQuantity());
+			//product.setQuantity(cartItem.getQuantity());
 			product.setImage(cartItem.getImage());
 
 			Cart cart = new Cart();
-			cart.setPhone(cartItem.getUserPhone());
+			//cart.setPhone(cartItem.getUserPhone());
 			cart.setProduct(product);
 
 			DBService db = new DBService(factory);
