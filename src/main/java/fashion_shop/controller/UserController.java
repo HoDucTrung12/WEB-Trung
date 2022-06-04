@@ -364,4 +364,31 @@ public class UserController {
 		return "redirect:/home/index.htm";
 	}
 	
+	//Change info
+	@RequestMapping(value = { "changeInfor" }, method = RequestMethod.GET)
+	public String changeInfo(ModelMap model, HttpServletRequest request) {
+		HttpSession httpSession = request.getSession();
+		Account user = (Account) httpSession.getAttribute("user");
+		httpSession.setAttribute("user", user);
+		model.addAttribute("user", user);
+		return "user/changeInfo";
+	}
+	
+	@RequestMapping(value = { "changeInfor" }, method = RequestMethod.POST)
+	public String changeInfo(ModelMap model,
+			HttpSession session,
+			@RequestParam("username") String username,
+			@RequestParam("name") String name,
+			//@RequestParam(value="birthday") Date birthday,
+			@RequestParam("phone") String phone,
+			@RequestParam("address") String address) {
+		
+		Date birthday = new Date();
+		accountDAO.updateUser(username, name, birthday, phone, address);
+		Account acc = accountDAO.getUser(username);
+		session.setAttribute("acc", acc);
+		
+		return "redirect:/user/userHome.htm";
+	}
+	
 }
