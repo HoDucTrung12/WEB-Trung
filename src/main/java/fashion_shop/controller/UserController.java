@@ -2,6 +2,7 @@ package fashion_shop.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -303,64 +304,64 @@ public class UserController {
 	}
 
 	// Đổi mật khẩu
-	@RequestMapping(value = "changepassword", method = RequestMethod.GET)
-	public String changepassword() {
-		return "user/changePassword";
-	}
-	
-	@RequestMapping(value = { "changepassword" }, params = "changePass",method = RequestMethod.POST)
-	public String change_password(ModelMap model, HttpServletRequest request,
-			@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
-			@RequestParam("newPasswordAgain") String newPasswordAgain) {
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-		HttpSession httpSession = request.getSession();
-		Account user = (Account) httpSession.getAttribute("acc");
-
-		System.out.println("1");
-		if (!user.getPassword().equals(oldPassword)) {
-			System.out.println("2");
-			model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
-			return "redicrect:/user/changepassword/${acc }.htm?changePass";
-		}
-		if (oldPassword.length() == 0)
-			model.addAttribute("message1", "Mật khẩu không được để trống");
-		if (newPassword == null)
-			model.addAttribute("message2", "Mật khẩu không được để trống");
-		if (newPasswordAgain == null)
-			model.addAttribute("message3", "Mật khẩu không được để trống");
-		else if (!newPassword.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")
-				|| !newPasswordAgain.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
-			model.addAttribute("message", "Nhập trên 8 kí tự trong đó có chữ Hoa thường và ký tự đặc biệt");
-		else if (!newPassword.equals(newPasswordAgain)) {
-			System.out.println("2");
-			model.addAttribute("message", "Mật khẩu mới không trùng nhau !");
-		} else if (newPassword.equals(oldPassword)) {
-			System.out.println("3");
-			model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu cũ !");
+		@RequestMapping(value = "changepassword", method = RequestMethod.GET)
+		public String changepassword() {
+			return "user/changePassword";
 		}
 		
-		else {
-			System.out.println("4");
-			try
-			{
-				System.out.println("5");
-				user.setPassword(newPassword);
-				session.update(user);
-				t.commit();
-				model.addAttribute("message", "Thay đổi mật khẩu thành công!");
-				httpSession.setAttribute("user", user);
-			} catch (
+		@RequestMapping(value = { "changepassword" },method = RequestMethod.POST)
+		public String change_password(ModelMap model ,HttpServletRequest request,
+				@RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword,
+				@RequestParam("newPasswordAgain") String newPasswordAgain) {
+			Session session = factory.openSession();
+			Transaction t = session.beginTransaction();
+			HttpSession httpSession = request.getSession();
+			Account user = (Account) httpSession.getAttribute("acc");
 
-			Exception e) {
-				model.addAttribute("message", "Thay đổi mật khẩu thất bại!");
-				t.rollback();
-			} finally {
-				session.close();
+
+			if (!user.getPassword().equals(oldPassword)) {
+				model.addAttribute("message1", "Mật khẩu cũ không chính xác!");
 			}
+			if (oldPassword.length() == 0) {
+				model.addAttribute("message1", "Mật khẩu không được để trống");			
+			}
+			
+			if (newPassword.length() == 0) {
+				model.addAttribute("message2", "Mật khẩu không được để trống");
+			}
+
+			if (newPasswordAgain.length() == 0) {
+				model.addAttribute("message3", "Mật khẩu không được để trống");
+			}
+//					errors.rejectValue("newPasswordAgain", "user", "Mật khẩu không được để trống");
+			else if (!newPassword.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$")
+					|| !newPasswordAgain.matches("^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"))
+				model.addAttribute("message", "Mật khẩu mới cần trên 8 kí tự trong đó có chữ Hoa thường và ký tự đặc biệt");
+			else if (!newPassword.equals(newPasswordAgain)) {
+				System.out.println("2");
+				model.addAttribute("message", "Mật khẩu mới không trùng nhau !");
+			} else if (newPassword.equals(oldPassword)) {
+				System.out.println("3");
+				model.addAttribute("message", "Mật khẩu mới không được trùng với mật khẩu cũ !");
+			}
+			
+			else {
+				try
+				{
+					user.setPassword(newPassword);
+					session.update(user);
+					t.commit();
+					model.addAttribute("message", "Thay đổi mật khẩu thành công!");
+					httpSession.setAttribute("user", user);
+				} catch (Exception e) {
+					model.addAttribute("message", "Thay đổi mật khẩu thất bại!");
+					t.rollback();
+				} finally {
+					session.close();
+				}
+			}
+			return "user/changePassword";
 		}
-		return "user/changePassword";
-	}
 	
 	//View của user home
 	@RequestMapping(value = { "userHome" }, method = RequestMethod.GET)
@@ -384,5 +385,32 @@ public class UserController {
 		s.removeAttribute("acc");
 		return "redirect:/home/index.htm";
 	}
+	
+	//Change info
+		@RequestMapping(value = { "changeInfor" }, method = RequestMethod.GET)
+		public String changeInfo(ModelMap model, HttpServletRequest request) {
+			HttpSession httpSession = request.getSession();
+			Account user = (Account) httpSession.getAttribute("user");
+			httpSession.setAttribute("user", user);
+			model.addAttribute("user", user);
+			return "user/changeInfo";
+		}
+
+		@RequestMapping(value = { "changeInfor" }, method = RequestMethod.POST)
+		public String changeInfo(ModelMap model,
+				HttpSession session,
+				@RequestParam("username") String username,
+				@RequestParam("name") String name,
+				//@RequestParam(value="birthday") Date birthday,
+				@RequestParam("phone") String phone,
+				@RequestParam("address") String address) {
+
+			Date birthday = new Date();
+			accountDAO.updateUser(username, name, birthday, phone, address);
+			Account acc = accountDAO.getUser(username);
+			session.setAttribute("acc", acc);
+
+			return "redirect:/user/userHome.htm";
+		}
 	
 }

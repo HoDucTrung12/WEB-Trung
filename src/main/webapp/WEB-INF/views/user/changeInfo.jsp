@@ -20,7 +20,7 @@
 
 </head>
 <body>
-    
+
     <aside class="aside">
         <a href="user/userHome.htm" class="admin">
             <div class="logo">
@@ -40,7 +40,7 @@
             </li>
 
             <li class="function">
-                <a href="user/changepassword.htm" class="">
+                <a href="user/changepassword/{acc}.htm" class="">
                     <div class="icon">
                         <i class="fa-solid fa-key"></i>
                     </div>
@@ -58,9 +58,9 @@
                 </a>
             </li>
 
-        
 
-            
+
+
         </ul>
 
         <form>
@@ -81,24 +81,25 @@
         </div>
 
         <div class="main-content">
+        	<form method="post">
             <div class="row">
                 <div class="col-4">
                     <div class="logo">
                         <i class="fa-solid fa-t"></i>
                     </div>
                 </div>
-                
+
                 <div class="col-4">
-                    
+
                     <label for="">Username:</label>
-                    <input type="text" placeholder= "Username" value="${acc.getUser_name() }" readonly>
-                    
+                    <input type="text" placeholder= "Username" name="username" value="${acc.getUser_name() }" readonly>
+
                     <label for="">Full name:</label>
-                    <input type="text" placeholder="FullName" value= "${acc.getFullname() }" readonly>
-                    
+                    <input type="text" placeholder="FullName" name="name" value= "${acc.getFullname() }" >
+
                     <label for="">Email:</label>
                     <input type="email" placeholder="Email" value= "${acc.getEmail() }" readonly>
-                    
+
                     <!-- <select name="" id="" reaonly>
                         <option value="">Male</option>
                         <option value="">Female</option>
@@ -107,30 +108,35 @@
 
 
                 </div>
-                
+
                 <div class="col-4">
-                
+
                 	<label for="">Birthday:</label>
-                    <input type="date" placeholder="Birthday" value="${acc.getBirthday() }" readonly>
-                    
+                    <input type="date" placeholder="Birthday" name="birthday" value="${acc.getBirthday() }" >
+
                     <label for="">Number:</label>
-                    <input type="number" placeholder="PhoneNumber" value= "${acc.getPhone() }" readonly>
-                    
+                    <input type="number" placeholder="PhoneNumber" name="phone" value= "${acc.getPhone() }" >
+
                     <label for="">Address:</label>
-                    <input type="text" placeholder="Address" value= "${acc.getAddress() }" readonly>
+                    <input type="text" placeholder="Address" name="address" value= "${acc.getAddress() }" >
                 </div>
             </div>
 
-            <a href="user/changeInfor.htm" class="btn">Change Information</a>
+			<button class="btn">Save changes</button>
+			<!-- 
+            <a href="user/changeInfor/${acc.user_name }.htm" class="btn">Change Information</a>
+			 -->
+			</form>
+
 
         </div>
     </main>
 
-  
+
 
 </body>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="<c:url value='/resources/home/dist/js/owl.carousel.js' />"></script>
 	<script src="<c:url value='/resources/home/dist/js/home.js' />"></script>
-</html>
+</html> 
