@@ -121,7 +121,7 @@
                 </div>
             </div>
 
-            <a href="user/changeInfor/${acc.user_name }.htm" class="btn-change">Change Information</a>
+            <a href="user/changeInfor.htm" class="btn">Change Information</a>
 
         </div>
     </main>
