@@ -78,75 +78,56 @@
                         </a>
                         
                         <div class="cart">
-                            <div class="show-prods">
-                                <div class="prod">
-                                    <div class="prod-image">
-                                        <img src="https://d-themes.com/html/riode/images/demos/demo4/products/5.jpg" alt="">
-                                    </div>
-
-                                    <div class="prod-info">
-                                        <div class="prod-content">
-                                            <h3 ><a href="home/detail.htm" class="prod-name">Riode White Trends</a></h3>
-                                            <p><span class="quantity">1</span> x <span class="price">$21.00</span></p>
-                                        </div>
-
-                                        
-                                    </div>
-
-                                    <div class="btn-remove">
-                                        <span class="icon"><i class="fa-solid fa-xmark"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="prod">
-                                    <div class="prod-image">
-                                        <img src="https://d-themes.com/html/riode/images/demos/demo4/products/5.jpg" alt="">
-                                    </div>
-
-                                    <div class="prod-info">
-                                        <div class="prod-content">
-                                            <h3 ><a href="" class="prod-name">Riode White Trends</a></h3>
-                                            <p><span class="quantity">1</span> x <span class="price">$21.00</span></p>
-                                        </div>
-
-                                        
-                                    </div>
-
-                                    <div class="btn-remove">
-                                        <span class="icon"><i class="fa-solid fa-xmark"></i></span>
-                                    </div>
-                                </div>
-
-                                <div class="prod">
-                                    <div class="prod-image">
-                                        <img src="https://d-themes.com/html/riode/images/demos/demo4/products/5.jpg" alt="">
-                                    </div>
-
-                                    <div class="prod-info">
-                                        <div class="prod-content">
-                                            <h3 ><a href="" class="prod-name">Riode White Trends</a></h3>
-                                            <p><span class="quantity">1</span> x <span class="price">$21.00</span></p>
-                                        </div>
-
-                                        
-                                    </div>
-
-                                    <div class="btn-remove">
-                                        <span class="icon"><i class="fa-solid fa-xmark"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="subtotal">
-                                <label for="">Subtotal:</label>
-                                <span class="total-price">$139.00</span>
-                            </div>
-
-                            <div class="action">
-                                <!-- <a class="btn-view-cart" href="viewCart.html">View Cart</a> -->
-
-                                <a href="cart/checkout.htm" class="btn-check-out">GO TO CHECK OUT</a>
-                            </div>
+                            <c:choose>
+	                        	<c:when test="${empty acc }">
+	                        		<p>Please login for shopping</p>
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		<c:choose>
+	                        			<c:when test="${empty cartItems }">
+	                        				<p>Your cart is empty</p>
+	                        			</c:when>
+	                        			<c:otherwise>
+	                        				<c:set var="subtotal" value="${0 }"/>
+		                        			<div class="show-prods">                            		                            		
+			                            		<c:forEach var="e" items="${cartItems}">
+			                            			<div class="prod">
+					                                    <div class="prod-image">
+					                                        <img src="${e.product.image }" alt="">
+					                                    </div>
+					
+					                                    <div class="prod-info">
+					                                        <div class="prod-content">
+					                                            <h3 ><a href="home/detail.htm" class="prod-name">${e.product.name }</a></h3>
+					                                            <p>
+					                                            	<span class="quantity">${e.checkOutQuantity }</span> x <span class="price">${e.product.price }</span>
+					                                            	<c:set var="subtotal" value="${subtotal + e.checkOutQuantity * e.product.price }"/>
+					                                            </p>
+					                                        </div>                                        
+					                                    </div>
+					                                    <div class="btn-remove">
+					                                        <span class="icon"><i class="fa-solid fa-xmark"></i></span>
+					                                    </div>
+					                                </div>    
+			                            		</c:forEach>	                                                                                         
+				                            </div>
+		
+				                            <div class="subtotal">
+				                                <label for="">Subtotal:</label>		                                
+				                                <span class="total-price">
+				                                	<fmt:formatNumber type="currency" currencySymbol="$ " value="${subtotal}" />
+				                                </span>
+				                            </div>
+				
+				                            <div class="action">
+				                                <!-- <a class="btn-view-cart" href="viewCart.html">View Cart</a> -->
+				
+				                                <a href="cart/checkout.htm" class="btn-check-out">GO TO CHECK OUT</a>
+				                            </div>
+	                        			</c:otherwise>
+	                        		</c:choose>
+	                        	</c:otherwise>                        		
+                        	</c:choose>
                         </div>
                     </li>
 				</ul>

@@ -27,9 +27,19 @@ public class productDAO {
 	//( mix between 2 Entity: Product & SizeAndColor)
 	public List<Object[]> getLMixProd() {
 		Session session = factory.getCurrentSession();
-		String hql = "select P.idProduct, P.ProdCategory, P.name, P.price, P.image, S.pk.color, S.pk.size, S.pk.quantity  " +
+		String hql = "select P.idProduct, P.ProdCategory, P.name, P.price, P.image, S.pk.color, S.pk.size, S.quantity  " +
 				" from Product P, SizeAndColor S "
 				+ "where P.idProduct = S.pk.productID";
+		Query query = session.createQuery(hql);
+		List<Object[]> listProd = query.list();
+		return listProd;
+	}
+	
+	public List<Object[]> getProductDetailByID(String id) {
+		Session session = factory.getCurrentSession();
+		String hql = "select P.idProduct, P.ProdCategory, P.name, P.price, P.image, S.pk.color, S.pk.size, S.quantity " +
+				" from Product P, SizeAndColor S " +
+				" where P.idProduct = S.pk.productID and P.idProduct = '" + id + "'";
 		Query query = session.createQuery(hql);
 		List<Object[]> listProd = query.list();
 		return listProd;

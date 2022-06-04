@@ -53,66 +53,126 @@ public class CartController {
 	List<Cart> cartItems = new ArrayList<Cart>();
 
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-	public String addCart(@ModelAttribute("cartItem") CartItem cartItem) {
-
-		if (cartItem != null) {						
-			Product product = new Product();
-			product.setIdProduct(cartItem.getIdProduct());
-			product.setName(cartItem.getName());
-			product.setColor(cartItem.getColor());
-			product.setSize(cartItem.getSize());
-			product.setPrice(cartItem.getPrice());
-			product.setQuantity(cartItem.getQuantity());
-			product.setImage(cartItem.getImage());
-
-			Cart cart = new Cart();
-			cart.setPhone(cartItem.getUserPhone());
-			cart.setProduct(product);
-
-			DBService db = new DBService(factory);
-			Cart existedCartItem = db.getCartItemByPhoneAndProduct(cartItem.getUserPhone(), cartItem.getIdProduct());
-
-			if (existedCartItem != null) {
-				cart.setId(existedCartItem.getId());
-				cart.setQuantity(existedCartItem.getQuantity() + cartItem.getQuantity());
-				db.updateCart(cart);
-			} else {				
-				cart.setQuantity(cartItem.getQuantity());				
-				db.insertCart(cart);
-			}
+	public String addCart(ModelMap model, HttpSession session, HttpServletRequest req,  
+			@RequestParam("productID") String productID,
+			@RequestParam("selectedColor") String selectedColor,
+			@RequestParam("selectedSize") String selectedSize,
+			@RequestParam("addedQuantity") Integer addedQuantity) {
+		
+		Account account = (Account) session.getAttribute("acc");		
+		if (account == null) {
+			session.setAttribute("fromPage", "home/detail" + productID);			
+			return "redirect:/user/login.htm";
 		}
+		
+		DBService db = new DBService(factory);
+		Product product = db.getProductById(productID);
+		
+		Cart cart = new Cart();
+		cart.setAccount(account);
+		cart.setProduct(product);
+		cart.setColor(selectedColor);
+		cart.setSize(selectedSize);
+		
+		Cart existedCartItem = db.getExistedCartItem(account.getUser_name(), productID, selectedColor, selectedSize);
+		
+		if (existedCartItem != null) {
+			cart.setId(existedCartItem.getId());
+			cart.setQuantity(existedCartItem.getQuantity() + addedQuantity);
+			db.updateCart(cart);
+		} else {				
+			cart.setQuantity(addedQuantity);				
+			db.insertCart(cart);
+		}		
+		
+		List<CartItem> cartItems = db.getCartListForUser(account.getUser_name());				
+		req.getSession().setAttribute("cartItems", cartItems);
 
-		return "redirect:/home/detail/" + cartItem.getIdProduct() + ".htm";
+		return "redirect:/home/detail/" + productID + ".htm";
 	}
 
 	@RequestMapping("checkout")
-	public String checkout(ModelMap model, HttpServletRequest req) {
-		HttpSession s = req.getSession();
-		Account account = (Account) s.getAttribute("acc");
+	public String checkout(ModelMap model, HttpSession session) {
+		Account account = (Account) session.getAttribute("acc");
 
 		if (account == null) {
-			s.setAttribute("fromPage", "cart");			
+			session.setAttribute("fromPage", "cart/checkout");			
 			return "redirect:/user/login.htm";
 		}
 
-		DBService db = new DBService(factory);
-		List<Cart> cartItems = db.getCartItemsByPhone(account.getPhone());			
+		@SuppressWarnings("unchecked")
+		List<CartItem> cartItems = (List<CartItem>) session.getAttribute("cartItems");
 
-		if (cartItems.size() == 0) {
-			model.addAttribute("emptyCart", 1);	
-			return "cart/checkOut";
+		model.addAttribute("cartItems", cartItems);			
+		return "cart/checkOut";
+	}
+	
+	@RequestMapping(value = "delete/{id}", params = "linkDeleteItem")
+	public String deleteCart(ModelMap model, HttpSession session, @PathVariable("id") Integer id) {
+		Account account = (Account) session.getAttribute("acc");
+		
+		if (account == null) {
+			session.setAttribute("fromPage", "cart/checkout");			
+			return "redirect:/user/login.htm";
 		}
+		
+		DBService db = new DBService(factory);
+		db.deleteCart(id);			
 
-		List<Product> products = new ArrayList<Product>();
+		List<CartItem> cartItems = db.getCartListForUser(account.getUser_name());				
+		session.setAttribute("cartItems", cartItems);		
+		
+		return "redirect:/cart/checkOut.htm";
+	}
+	
+	@RequestMapping(value = "orderComplete")
+	public String completeOrder(ModelMap model, HttpSession session) {
+		Account account = (Account) session.getAttribute("acc");
+		
+		if (account == null) {
+			session.setAttribute("fromPage", "cart/checkout");			
+			return "redirect:/user/login.htm";
+		}
+		
+		DBService db = new DBService(factory);
+		List<Cart> cartList = db.getCartItemsByUsername(account.getUser_name());	
 
-		for (Cart item : cartItems) {
-			Product product = db.getProductById(item.getProduct().getIdProduct());
-			if (product != null) {
-				products.add(product);
+		if (cartList.size() > 0) {
+			SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+			Date date = new Date();
+			Order order = new Order();			
+			order.setEmails(account);		
+//			order.setOrder_date(new java.sql.Date(date.getTime()));
+			
+			Float totalPrice = (float) 0;
+			for (Cart item : cartList) {
+				totalPrice += item.getProduct().getPrice();
+			}
+			order.setTotalPrice(totalPrice);
+//			order.setUsername(account.getUser_name());
+//			order.setPhone(account.getPhone());
+//			order.setAddress(account.getAddress());
+			
+//			System.out.println
+			
+			Integer orderSaveStatus = db.insertOrder(order); 
+			
+			if (orderSaveStatus == 1) {
+				Order existedOrder = db.getExistedOrder(account.getEmail(), new java.sql.Date(date.getTime()));
+				if (existedOrder != null) {
+					for (Cart item : cartList) {
+						OrderDetail orderDetail = new OrderDetail();
+						orderDetail.setOrder(existedOrder);
+						orderDetail.setProd(item.getProduct());
+						orderDetail.setQuantity(item.getQuantity());
+						orderDetail.setPrice(item.getProduct().getPrice());
+						db.insertOrderDetail(orderDetail);
+					}
+					return "cart/orderComplete";
+				}
 			}
 		}
-
-		model.addAttribute("products", products);			
+		
 		return "cart/checkOut";
 	}
 }

@@ -17,12 +17,19 @@ public class Cart {
 	@Column(name = "Id", nullable = false)
 	private Integer id;
 
-	@Column(name = "Phone", nullable = false)
-	private String phone;
+	@ManyToOne
+	@JoinColumn(name = "Username", nullable = false)
+	private Account account;
 
 	@ManyToOne
-	@JoinColumn(name="ProductID")
+	@JoinColumn(name="ProductID", nullable = false)
 	private Product product;
+	
+	@Column(name = "Size")
+	private String size;
+	
+	@Column(name = "Color")
+	private String color;
 
 	@Column(name = "quantity", nullable = false)
 	private Integer quantity;
@@ -32,11 +39,13 @@ public class Cart {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cart(Integer id, String phone, Product product, Integer quantity) {
+	public Cart(Integer id, Account account, Product product, String size, String color, Integer quantity) {
 		super();
 		this.id = id;
-		this.phone = phone;
+		this.account = account;
 		this.product = product;
+		this.size = size;
+		this.color = color;
 		this.quantity = quantity;
 	}
 
@@ -46,14 +55,14 @@ public class Cart {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}	
+
+	public Account getAccount() {
+		return account;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public Product getProduct() {
@@ -62,6 +71,23 @@ public class Cart {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+	
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public Integer getQuantity() {

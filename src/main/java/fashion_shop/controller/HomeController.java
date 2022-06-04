@@ -1,6 +1,11 @@
 package fashion_shop.controller;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import fashion_shop.entity.Account;
 import fashion_shop.entity.Product;
 import fashion_shop.entity.ProductCategory;
+import fashion_shop.entity.SizeAndColor;
 import fashion_shop.service.DBService;
 import fashion_shop.DAO.productDAO;
 import fashion_shop.bean.CartItem;
@@ -33,12 +39,6 @@ public class HomeController {
 	
 	@Autowired
 	productDAO productDAL;
-	
-	
-	
-	
-	
-	
 	
 	@RequestMapping("index")	
 	public String index(ModelMap model) {
@@ -78,44 +78,97 @@ public class HomeController {
 		model.addAttribute("catON", "true");
 		model.addAttribute("catID", idCategory);
 		return "home/products";
-	}	
-		
-//	@RequestMapping(value = { "detail/{idProduct}" }, method = RequestMethod.GET)
-//	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String id) {
-//		model.addAttribute("product", productDAL.getProduct(id));
-//		model.addAttribute("prods", productDAL.getLProd());
-//		return "home/detail";
-//	}
+	}
 	
 	// view product_detail
 	@RequestMapping(value = { "detail/{idProduct}" },method = RequestMethod.GET)
-	public String view_product_detail(ModelMap model, @PathVariable("idProduct") String id, HttpSession session) {
+	public String view_product_detail(ModelMap model, HttpSession session, 
+			@PathVariable("idProduct") String id) {
 		DBService db = new DBService(factory);
 		Product product = db.getProductById(id);
-		Account account = (Account) session.getAttribute("acc");
-		if (account == null) {
-			return "home/detail";
+//		Account account = (Account) session.getAttribute("acc");
+
+//		CartItem cartItem = new CartItem();
+//		cartItem.setUsername(account == null ? null : account.getUser_name());
+//		cartItem.setProductID(product.getIdProduct());
+				
+		List<Object[]> productDetail = productDAL.getProductDetailByID(product.getIdProduct());		
+		List<String> colors = new ArrayList<String>();
+		List<String> sizesByColor = new ArrayList<String>();
+		
+		Map<Object, Set<Object>> productColors = productDetail.stream().collect(Collectors.groupingBy(o -> o[5], Collectors.mapping(o -> o[6], Collectors.toSet())));		
+		
+		productColors.forEach((key, val) -> { colors.add((String) key); });
+		
+		String selectedColor = null;
+		if (colors.size() > 0) {
+			selectedColor = colors.get(0);			
+			String tmpVal = selectedColor;	//Without this row, Java throws error: Local variable selectedColor defined in an enclosing scope must be final or effectively final
+			productColors.forEach((key, val) -> {
+				String color_i = (String) key;		
+				if (color_i.equals(tmpVal)) {
+					for (Object o : val) {	// val is a HashMap
+						String size = String.valueOf(o);
+						sizesByColor.add(size);
+					}
+				}
+			});
 		}
-
-		CartItem cartItem = new CartItem();
-		cartItem.setUserPhone(account.getPhone());
-		cartItem.setIdProduct(product.getIdProduct());
-		cartItem.setName(product.getName());
-		cartItem.setPrice(product.getPrice());
-		cartItem.setImage(product.getImage());
 		
-		List<Product> list = productDAL.getLProd();
-		int size = productDAL.getLProd().size();
-		List<ProductCategory> listCate = productDAL.getLCat();
-		model.addAttribute("prods", list); 
-		model.addAttribute("prodsSize", size);
-		model.addAttribute("listCat", listCate);
+		List<Product> products = productDAL.getLProd();				
+				
+		model.addAttribute("product", product);
+		model.addAttribute("colors", colors);
+		model.addAttribute("sizesByColor", sizesByColor);
+//		model.addAttribute("cartItem", cartItem);
+		model.addAttribute("products", products);
+		model.addAttribute("selectedColor", selectedColor);
 		
-//		model.addAttribute("catON", "true");
-//		model.addAttribute("catID", idCategory);
+		if (selectedColor != null)
+			return "redirect:/home/detail/" + product.getIdProduct() + "/" + selectedColor + ".htm";		
+		
+		return "home/detail";
+	}
+	
+	@RequestMapping(value = { "detail/{idProduct}/{color}" },method = RequestMethod.GET)
+	public String view_product_detail_set_size_by_color(ModelMap model, HttpSession session,
+			@PathVariable("idProduct") String id,
+			@PathVariable("color") String selectedColor) {
+		DBService db = new DBService(factory);
+		Product product = db.getProductById(id);
+//		Account account = (Account) session.getAttribute("acc");
 
-
-		model.addAttribute("cartItem", cartItem);
+//		CartItem cartItem = new CartItem();
+//		cartItem.setUsername(account == null ? null : account.getUser_name());
+//		cartItem.setProductID(product.getIdProduct());
+				
+		List<Object[]> productDetail = productDAL.getProductDetailByID(product.getIdProduct());		
+		List<String> colors = new ArrayList<String>();
+		List<String> sizesByColor = new ArrayList<String>();
+		
+		Map<Object, Set<Object>> productColors = productDetail.stream().collect(Collectors.groupingBy(o -> o[5], Collectors.mapping(o -> o[6], Collectors.toSet())));				
+		
+		
+		productColors.forEach((key, val) -> {
+			String color_i = (String) key;
+			colors.add(color_i);			
+			if (color_i.equals(selectedColor)) {
+				for (Object o : val) {	// val is a HashMap
+					String size = String.valueOf(o);
+					sizesByColor.add(size);
+				}
+			}
+		});
+		
+		List<Product> products = productDAL.getLProd();
+				
+		model.addAttribute("product", product);
+		model.addAttribute("colors", colors);
+		model.addAttribute("sizesByColor", sizesByColor);
+//		model.addAttribute("cartItem", cartItem);
+		model.addAttribute("products", products);
+		model.addAttribute("selectedColor", selectedColor);
+		
 		return "home/detail";
 	}
 	

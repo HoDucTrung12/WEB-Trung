@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "Order")
 public class Order {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID")
 	private Integer id_order;
 	
@@ -30,6 +31,18 @@ public class Order {
 	@ManyToOne
 	@JoinColumn(name = "Cus_email")
 	private Account emails;
+	
+	@Column(name = "TotalPrice")
+	private Float totalPrice;
+	
+	@Column(name = "Cus_username")
+	private String username;
+	
+	@Column(name = "Phone")
+	private String phone;
+	
+	@Column(name = "Cus_address")
+	private String address;
 	
 	public Account getEmails() {
 		return emails;
@@ -63,5 +76,38 @@ public class Order {
 	public void setOrder_date(Date order_date) {
 		this.order_date = order_date;
 	}
+
+	public Float getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Float totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
 }
 	

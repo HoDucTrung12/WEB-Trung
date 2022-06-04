@@ -1311,4 +1311,25 @@ header .header-support.active {
 .main .show-products .owl-carousel .product:hover .btn-view {
   opacity: 0.8;
 }
+
+.main .product-form .list-color {
+  margin-bottom: 10px;
+}
+
+.main .product-form .list-color .color {
+  padding: 6px 10px;
+  border: 2px solid #ccc;
+  color: #333;
+  margin-right: 6px;
+}
+
+.main .product-form .list-color .color.selected {
+  background-color: #1e90ff;
+  color: white;
+  border-color: #1e90ff;
+}
+
+.main .product-form .list-color .color:hover {
+  border-color: #1e90ff;
+}
 /*# sourceMappingURL=detail.css.map */

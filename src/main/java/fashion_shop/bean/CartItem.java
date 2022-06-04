@@ -1,72 +1,33 @@
 package fashion_shop.bean;
 
+import java.util.List;
+
+import fashion_shop.entity.Product;
+
 public class CartItem {
-	private Integer id;
-	private String userPhone;	
-	private String idProduct;
-	private String name;	
-	private String color;
+	private Product product;
 	private String size;
-	private Float price;	
-	private Integer quantity;
-	private String image;
+	private String color;
+	private Integer checkOutQuantity;
 
 	public CartItem() {
 		super();
 	}
 
-	public CartItem(Integer id, String userPhone, String idProduct, String name, String color, String size, Float price,
-			Integer quantity, String image) {
+	public CartItem(Product product, String size, String color, Integer checkOutQuantity) {
 		super();
-		this.id = id;
-		this.userPhone = userPhone;
-		this.idProduct = idProduct;
-		this.name = name;
-		this.color = color;
+		this.product = product;
 		this.size = size;
-		this.price = price;
-		this.quantity = quantity;
-		this.image = image;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getUserPhone() {
-		return userPhone;
-	}
-
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
-	}
-
-	public String getIdProduct() {
-		return idProduct;
-	}
-
-	public void setIdProduct(String idProduct) {
-		this.idProduct = idProduct;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
 		this.color = color;
+		this.checkOutQuantity = checkOutQuantity;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
 
 	public String getSize() {
@@ -77,29 +38,20 @@ public class CartItem {
 		this.size = size;
 	}
 
-	public Float getPrice() {
-		return price;
+	public String getColor() {
+		return color;
 	}
 
-	public void setPrice(Float price) {
-		this.price = price;
+	public void setColor(String color) {
+		this.color = color;
 	}
 
-	public Integer getQuantity() {
-		return quantity;
+	public Integer getCheckOutQuantity() {
+		return checkOutQuantity;
 	}
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
-	}	
-
-
+	public void setCheckOutQuantity(Integer checkOutQuantity) {
+		this.checkOutQuantity = checkOutQuantity;
+	}		
+	
 }

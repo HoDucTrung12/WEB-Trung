@@ -3,6 +3,7 @@ pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!-- <!DOCTYPE html> -->
 <html lang="en">
@@ -31,9 +32,100 @@ pageEncoding="UTF-8"%>
     <main class="main">
         <div class="container">
             <div class="product">
-                
-                
-                
+                <div class="row">
+                    <div class="col-5 product-image">
+                        <img src="${product.image }" alt="">
+                    </div>
+                    <div class="col-7 product-detail">
+                        <div class="product-navigation">
+                            <a href="home/index.htm"><i class="fa-solid fa-house"></i></a>
+                            <i class="fa-solid fa-angle-right"></i>
+                            <a href="home/products.htm">Products</a>
+                            <i class="fa-solid fa-angle-right"></i>
+                            Detail
+                        </div>
+
+                        <h2 class="product-name">${product.name }</h2>
+                        <div class="product-meta">
+                            <div class="product-sku">
+                                SKU: ${product.idProduct }
+                            </div>
+
+                            <div class="product-brand">
+                                BRAND: The NorthFace
+                            </div>
+                        </div>
+
+                        <div class="product-price">$${product.price }</div>
+
+                        <div class="product-rating">
+                            <ul class="list-stars">
+                                <li class="active"><i class="fa-solid fa-star"></i></li>
+                                <li class="active"><i class="fa-solid fa-star"></i></li>
+                                <li class="active"><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                                <li><i class="fa-solid fa-star"></i></li>
+                            </ul>
+
+                            ( 6 Reviews )
+                        </div>
+
+                        <div class="product-short-desc">Sed egestas, ante et vulputate volutpat, eros pede semper est, vitae luctus metus libero eu augue. Morbi purus liberpuro ate vol faucibus adipiscing.</div>
+                        <div class="product-short-desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo architecto quo sed assumenda similique sequi iusto accusantium optio quisquam officia ipsam, nobis sint commodi saepe, deleniti modi ullam ab cum.</div>
+
+						<c:if test="${fn:length(colors) > 0}">
+							<div class="product-form">
+	                        	<label for="">Color:</label>
+	                            <div class="list-color">
+	                            	<c:forEach var="color" items="${colors }">
+		                            	<a class="color${ color == selectedColor ? ' selected' : '' }" style="margin-right: 10px;" href="home/detail/${product.idProduct }/${color }.htm">${color }</a>                      
+		                            </c:forEach>
+	                            </div>                                
+	                        </div>
+						</c:if>                   
+
+						<form action="cart/add.htm" method="post" class="flex-col">
+							
+							<input name="productID" id="productID" type="hidden" class="form-control" value="${product.idProduct }"/>
+							<input name="selectedColor" id="selectedColor" type="hidden" class="form-control" value="${selectedColor }"/>
+							
+							<c:choose>
+							    <c:when test="${fn:length(sizesByColor) > 0}">
+							        <div class="product-form">
+			                            <label for="">Size:</label>
+			                            <select name="selectedSize" id="selectedSize">
+			                                <c:forEach var="size" items="${sizesByColor }">
+				                            	<option value="${size }">${size }</option>	                                
+				                            </c:forEach>                                
+			                            </select>
+			                        </div>
+							    </c:when>    
+							    <c:otherwise>
+							        <input name="selectedSize" id="selectedSize" type="hidden" class="form-control" value=""/>
+							    </c:otherwise>
+							</c:choose>                     
+	
+	                        <div class="product-devider"></div>								                            	              				                
+				                <div class="product-form">
+		                            <div class="form-control">
+		                                <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
+		                                <input name="addedQuantity" type="number" name="addedQuantity" value="1" min="1" max="100"/>
+		                                <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
+		                            </div>
+		
+		                            <button class="add-cart" type="submit"><i class="fa-solid fa-basket-shopping"></i>Add to Cart</button>
+		                        </div>
+	                        <div class="product-devider"></div>
+						
+						</form>
+
+                        <div class="brands">
+                            <i class="fa-brands fa-facebook-f"></i>
+                            <i class="fa-brands fa-twitter"></i>
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                    </div>
+                </div>                
             </div>
 
             <div class="desc">
@@ -112,17 +204,14 @@ pageEncoding="UTF-8"%>
             <section class="show-products" style="padding-bottom: 50px;">
                 <div class="container">
     
-                    Title 
                     <h4 class="title">
                         Related Products
                         <a href="home/products.htm" class="more hover-p-color">VIEW MORE <i class="fa-solid fa-arrow-right"></i></a>
                     </h4>
     
-                    List Product Show
                     <div class="owl-carousel owl-theme">
     
-                         A product 
-					<c:forEach var="p" items="${prods}" begin="0" end="15" step="3">
+					<c:forEach var="p" items="${products}" begin="0" end="15" step="3">
 						<div class="col-4 product">
 							<div class="product-image">
 								<img
@@ -171,8 +260,6 @@ pageEncoding="UTF-8"%>
     </main>
 
     
-
-    Footer 
      <%@include file="/WEB-INF/views/footer.jsp"%>
 
 </body>

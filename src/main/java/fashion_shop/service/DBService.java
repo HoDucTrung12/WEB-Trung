@@ -1,5 +1,7 @@
 package fashion_shop.service;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,7 +13,10 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import fashion_shop.bean.CartItem;
 import fashion_shop.entity.Cart;
+import fashion_shop.entity.Order;
+import fashion_shop.entity.OrderDetail;
 import fashion_shop.entity.Product;
 
 @Transactional
@@ -48,34 +53,54 @@ public class DBService {
 		return pd;
 	}
 
-	public List<Cart> getCartItemsByPhone(String phone) {		
+	public List<Cart> getCartItemsByUsername(String username) {		
 		Session session = factory.getCurrentSession();
-		String hql = "FROM Cart WHERE phone = :phone";
+		String hql = "FROM Cart WHERE username = :username";
 		Query query = session.createQuery(hql);
-		query.setParameter("phone", phone);
+		query.setParameter("username", username);
 		List<Cart> list = query.list();
 
 		return list;
 	}
 
-	public Cart getCartItemByPhoneAndProduct(String phone, String productId) {		
-		String fnt = "getCartItemByPhoneAndProduct: ";
+	public Cart getExistedCartItem(String username, String productId, String color, String size) {		
+		String fnt = "getExistedCartItem: ";
 
 		Session session = factory.getCurrentSession();
-		String hql = "FROM Cart WHERE phone = :phone AND productid = :productId";		
+		String hql = "FROM Cart WHERE Username = :username AND ProductID = :productId AND Color = :color AND Size = :size";		
 		Cart cart;
 
 		try {
 			Query query = session.createQuery(hql);
-			query.setParameter("phone", phone);
+			query.setParameter("username", username);
 			query.setParameter("productId", productId);
-			cart = (Cart) query.list().get(0);			
+			query.setParameter("color", color);
+			query.setParameter("size", size);			
+			cart = (Cart) query.list().get(0);
 		} catch (Exception e) {
 			System.err.print(fnt + e);
 			return null;
 		}
 
 		return cart;
+	}
+	
+	public List<CartItem> getCartListForUser(String username) {
+		List<Cart> cartList = getCartItemsByUsername(username);		
+		List<CartItem> cartItems = new ArrayList<CartItem>();
+
+		for (Cart item : cartList) {
+			Product product = getProductById(item.getProduct().getIdProduct());			
+			if (product != null) {
+				CartItem tmp = new CartItem();					
+				tmp.setProduct(product);
+				tmp.setColor(item.getColor());
+				tmp.setSize(item.getSize());
+				tmp.setCheckOutQuantity(item.getQuantity());
+				cartItems.add(tmp);
+			}				
+		}
+		return cartItems;
 	}
 
 	public Integer insertCart(Cart cart) {
@@ -115,8 +140,8 @@ public class DBService {
 			session.close();
 		}
 		return 1;
-	}
-
+	}	
+	
 	public Integer deleteCart(Integer id) {
 		String fnt = "deleteCart: ";
 
@@ -134,6 +159,124 @@ public class DBService {
 		} finally {
 			session.close();
 		}
+		return 1;
+	}
+	
+	public Order getOrderById(String id) {
+		String fnt = "getOrderById: ";
+
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Order where id = :id";
+		Order order;
+
+		try {
+			Query query = session.createQuery(hql);
+			query.setParameter("id", id);
+			order = (Order) query.list().get(0);
+		} catch (Exception e) {
+			System.err.print(fnt + e);
+			return null;
+		}		
+
+		return order;
+	}
+	
+	public List<Order> getOrdersByUsername(String username) {		
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Order WHERE username = :username";
+		Query query = session.createQuery(hql);
+		query.setParameter("username", username);
+		List<Order> list = query.list();
+
+		return list;
+	}
+	
+	public Order getExistedOrder(String email, Date createdAt) {		
+		String fnt = "getExistedOrder: ";
+
+		Session session = factory.getCurrentSession();
+		String hql = "FROM Order WHERE email = :email AND order_date = :createdAt";		
+		Order order;
+
+		try {
+			Query query = session.createQuery(hql);
+			query.setParameter("email", email);
+			query.setParameter("createdAt", createdAt);			
+			order = (Order) query.list().get(0);
+		} catch (Exception e) {
+			System.err.print(fnt + e);
+			return null;
+		}
+
+		return order;
+	}
+	
+	public Integer insertOrder(Order order) {
+		String fnt = "insertOrder: ";
+
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			session.save(order);
+			t.commit();
+		} catch (Exception e) {
+			System.err.print(fnt + e);
+			t.rollback();
+			return 0;
+		} finally {
+			session.close();
+		}
+
+		return 1;
+	}
+	
+	public OrderDetail getOrderDetailById(String id) {
+		String fnt = "getOrderDetailById: ";
+
+		Session session = factory.getCurrentSession();
+		String hql = "FROM OrderDetail where id = :id";
+		OrderDetail orderDetail;
+
+		try {
+			Query query = session.createQuery(hql);
+			query.setParameter("id", id);
+			orderDetail = (OrderDetail) query.list().get(0);
+		} catch (Exception e) {
+			System.err.print(fnt + e);
+			return null;
+		}		
+
+		return orderDetail;
+	}
+	
+	public List<OrderDetail> getOrderDetailsByOrder(String orderID) {		
+		Session session = factory.getCurrentSession();
+		String hql = "FROM OrderDetail WHERE orderID = :orderID";
+		Query query = session.createQuery(hql);
+		query.setParameter("orderID", orderID);
+		List<OrderDetail> list = query.list();
+
+		return list;
+	}
+	
+	public Integer insertOrderDetail(OrderDetail orderDetail) {
+		String fnt = "insertOrderDetail: ";
+
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+
+		try {
+			session.save(orderDetail);
+			t.commit();
+		} catch (Exception e) {
+			System.err.print(fnt + e);
+			t.rollback();
+			return 0;
+		} finally {
+			session.close();
+		}
+
 		return 1;
 	}
 

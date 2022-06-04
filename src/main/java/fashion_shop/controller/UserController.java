@@ -1,6 +1,7 @@
 package fashion_shop.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -31,8 +32,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import fashion_shop.entity.Account;
+import fashion_shop.entity.Cart;
+import fashion_shop.entity.Product;
 import fashion_shop.entity.Role;
+import fashion_shop.service.DBService;
 import fashion_shop.DAO.accountDAO;
+import fashion_shop.bean.CartItem;
 
 @Transactional
 @Controller
@@ -200,16 +205,26 @@ public class UserController {
 			// chưa vào được admin (getrole đang là role)
 			boolean isAdmin = (boolean) acc.getrole().getIdRole().equals((Object) 1);
 			httpSession.setAttribute("acc", acc);
+			
+			DBService db = new DBService(factory);
+			List<CartItem> cartItems = db.getCartListForUser(acc.getUser_name());			
+			httpSession.setAttribute("cartItems", cartItems);
+			
 			if (isAdmin == true) {
 				return "redirect:/admin/adminHome.htm";
 			} else {
 				String fromPage = (String) httpSession.getAttribute("fromPage");
 				// session để lưu user là customer và quay lại home
 				model.addAttribute("session", httpSession.getAttribute("acc"));
-				if (fromPage == "cart") {
-					return "redirect:/cart/checkout.htm";
+				if (fromPage != null) {
+					if (fromPage == "cart/checkout")
+						return "redirect:/cart/checkout.htm";					
+					if (fromPage.contains("home/detail")) {
+						String productID = fromPage.substring(11, fromPage.length());
+						return "redirect:/home/detail/" + productID + ".htm";
+					}
 				} else {					
-					return "redirect:/home/index.htm";
+					return "redirect:/";
 				}
 			}
 		} else

@@ -45,7 +45,7 @@
             </div>
 
             <c:choose>
-			    <c:when test="${emptyCart eq 1}">
+			    <c:when test="${empty cartItems}">
 			        <h2 style="justify-content: center;">Your cart is empty</h2>
 			    </c:when>    
 			    <c:otherwise>
@@ -65,25 +65,38 @@
 		                                </tr>
 		                            </thead>
 		                            <tbody>
-		                            	<c:forEach var="pd" items="${products}">
+		                            	<c:set var="subtotal" value="${0 }"/>
+		                            	<c:forEach var="e" items="${cartItems}">
 		                            		<tr class="product">
 			                                    <td class="product-thumbnail">
-			                                        <img src="${pd.image}" alt="">
+				                                    <a href="home/detail/${e.product.idProduct }.htm">
+			                                        	<img src="${e.product.image}" alt="">
+			                                        </a>		                                        
 			                                    </td>
-			                                    <td class="product-name">${pd.name}</td>
+			                                    <td class="product-name">
+			                                    	<a href="home/detail/${e.product.idProduct }.htm">
+			                                    		${e.product.name}
+			                                    	</a>
+			                                    </td>
 			                                    <td class="product-subtotal">
-			                                    	<fmt:formatNumber type="currency" currencySymbol="$ " value="${pd.price}" />
+			                                    	<fmt:formatNumber type="currency" currencySymbol="$ " value="${e.product.price}" />
 			                                    </td>
 			                                    <td class="product-quantity">
 			                                        <div class="form-control">
 			                                            <button class="quantity-minus"><i class="fa-solid fa-minus"></i></button>
-			                                            <input id="product-quantity" type="number" value="${pd.quantity}">
+			                                            <input id="product-quantity" type="number" value="${e.checkOutQuantity}">
 			                                            <button class="quantity-plus"><i class="fa-solid fa-plus"></i></button>
 			                                        </div>
 			                                    </td>
-			                                    <td class="product-price"><fmt:formatNumber value="${pd.price * pd.quantity}" pattern="0.00"/></td>
+			                                    <td class="product-price">
+			                                    	<c:set var="itemPrice" value="${e.product.price * e.checkOutQuantity }"/>
+			                                    	<c:set var="subtotal" value="${subtotal + itemPrice }"/>
+			                                    	<fmt:formatNumber value="${itemPrice }" pattern="0.00"/> $
+		                                    	</td>
 			                                    <td class="product-close">
-			                                        <span class="btn-remove"><i class="fa-solid fa-xmark"></i></span>
+				                                    <a href="cart/delete/${e.product.idProduct }.htm?linkDeleteItem">
+			                                    		<span class="btn-remove"><i class="fa-solid fa-xmark"></i></span>
+			                                    	</a>			                                        
 			                                    </td>
 			                                </tr>
 		                            	</c:forEach>		                                		                               
@@ -121,7 +134,9 @@
 
 		                            <div class="total">
 		                                <label for="">Total</label>
-		                                <span class="price">$426.99</span>
+		                                <span class="price">
+											<fmt:formatNumber type="currency" currencySymbol="$ " value="${subtotal}" />
+										</span>
 		                            </div>
 
 		                            <div class="payment useless">
