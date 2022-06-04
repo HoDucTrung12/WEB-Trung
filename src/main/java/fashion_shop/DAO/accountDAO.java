@@ -25,4 +25,35 @@ public class accountDAO {
 		List<Account> listUser = query.list();
 		return listUser;
 	}
+	
+	public Account getUser( String username) {
+		Session session = factory.getCurrentSession();
+		Account user = (Account) session.get(Account.class, username);
+		return user;
+	}
+	
+	public boolean updateUser( String username, String name, Date birthday, String phone, String address ) {
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+		
+		Account acc = (Account) session.get(Account.class, username);
+		acc.setFullname(name);
+		acc.setBirthday(birthday);
+		acc.setPhone(phone);
+		acc.setAddress(address);
+		
+		boolean flag = true;
+		try {
+			session.update(acc);
+			t.commit();
+		} catch( Exception e) {
+			t.rollback();
+			flag =false;
+			System.out.println(e);
+		} finally {
+			session.close();
+		}
+		
+		return flag;
+	}
 }
